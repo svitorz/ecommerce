@@ -1,5 +1,5 @@
 services:
-    laravel.test:
+    ecommerce:
         build:
             context: './vendor/laravel/sail/runtimes/8.4'
             dockerfile: Dockerfile
@@ -22,20 +22,20 @@ services:
         networks:
             - sail
         depends_on:
-            - pgsql
+            - db
             - redis
-    pgsql:
+    db:
         image: 'postgres:17'
         ports:
-            - '${FORWARD_DB_PORT:-5432}:5432'
+            - '${DB_PORT}:5432'
         environment:
             PGPASSWORD: '${DB_PASSWORD:-secret}'
             POSTGRES_DB: '${DB_DATABASE}'
             POSTGRES_USER: '${DB_USERNAME}'
             POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
         volumes:
-            - 'sail-pgsql:/var/lib/postgresql/data'
-            - './vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+            - 'sail-db:/var/lib/postgresql/data'
+            - './vendor/laravel/sail/database/db/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
         networks:
             - sail
         healthcheck:
@@ -68,7 +68,7 @@ networks:
     sail:
         driver: bridge
 volumes:
-    sail-pgsql:
+    sail-db:
         driver: local
     sail-redis:
         driver: local
