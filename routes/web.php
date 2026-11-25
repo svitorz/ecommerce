@@ -7,6 +7,7 @@ use App\Http\Controllers\FavoriteProductsController;
 use App\Http\Controllers\GetRecommendedProductsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductRatingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,5 +52,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/favorites/{product}', [FavoriteProductsController::class, 'store'])->name('favorite.store');
     Route::delete('/favorites/{product}', [FavoriteProductsController::class, 'destroy'])->name('favorite.destroy');
 
-    Route::post('/rating/{user}/{product}', [App\Http\Controllers\ProductRatingController::class, 'store'])->name('rating.store');
+    Route::post('/products/{product}/ratings', [ProductRatingController::class, 'store'])->name('rating.store');
 });

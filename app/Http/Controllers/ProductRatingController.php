@@ -4,33 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductRating;
-use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProductRatingController extends Controller
 {
-    public ProductRating $productRating;
-
-    public function __construct(ProductRating $productRating)
+    public function store(Request $request, Product $product): RedirectResponse
     {
-        $this->productRating = $productRating;
-    }
-
-    public function store(User $user, Product $product, Request $request)
-    {
-        $validatedData = $request->validate([
+        $validated = $request->validate([
             'rating' => ['required', 'numeric', 'min:0', 'max:5'],
             'feedback' => ['required', 'string', 'max:128'],
         ]);
-        $this->productRating->updateOrCreate(
-            [
-                'product_id' => $product->id,
-                'user_id' => $user->id,
-            ],
-            [
-                'rating' => $validatedData['rating'], // Dados para atualizar/criar
-                'feedback' => $validatedData['feedback'],
-            ]
+
+        ProductRating::updateOrCreate(
+            ['product_id' => $product->id, 'user_id' => $request->user()->id],
+            $validated,
         );
 
         return back();

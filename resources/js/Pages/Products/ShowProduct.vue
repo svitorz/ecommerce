@@ -90,15 +90,11 @@ const submitRating = () => {
     try {
         ratingForm.post(
             route("rating.store", {
-                user: page.props.auth.user.id,
                 product: localProduct.id,
-                data: ratingForm,
             }),
             {
                 onSuccess: () => {
                     toastRef.value.showToast("Feedback sended!", "success");
-                    localProduct.inCart = false;
-                    localProduct.quantity = 1;
                     closeRatingModal();
                 },
             },
