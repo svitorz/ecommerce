@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 // use Illuminate\Http\Request;
-use App\Http\Controllers\CartController;
 use App\Models\Product;
 
 class GetRecommendedProductsController extends Controller
@@ -13,11 +12,11 @@ class GetRecommendedProductsController extends Controller
      */
     public function handle(int $limit = 3)
     {
-        $cartController = new CartController();
+        $cartController = new CartController;
         // Obtenha os produtos no carrinho
         $cartItems = $cartController->getCartItems();
 
-        if(empty($cartItems)){
+        if (empty($cartItems)) {
             return Product::distinct()->with('category')->limit($limit)->get()->toArray();
         }
 

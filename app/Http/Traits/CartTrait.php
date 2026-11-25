@@ -11,7 +11,7 @@ trait CartTrait
      */
     public function initializeCartSession(): void
     {
-        if (!session()->has('cart')) {
+        if (! session()->has('cart')) {
             session()->put('cart', []);
         }
     }
@@ -99,7 +99,7 @@ trait CartTrait
                 'quantity' => $item['quantity'],
                 'isFavorite' => $product->isFavorite,
                 'category' => $product->category->name,
-                'category_id' => $product->category_id
+                'category_id' => $product->category_id,
             ];
         })->toArray();
     }
@@ -110,6 +110,7 @@ trait CartTrait
     public function isInCart(Product $product): bool
     {
         $cart = session()->get('cart', []);
+
         return collect($cart)->contains('id', $product->id);
     }
 

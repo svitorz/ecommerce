@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Traits\CartTrait;
+
 class calculateSubTotalController extends Controller
 {
     use CartTrait;
+
     //
-    public function calculate(){
+    public function calculate()
+    {
         $cartProducts = $this->getCartItems();
 
         $subtotal = 0;

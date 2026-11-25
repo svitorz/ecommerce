@@ -12,13 +12,13 @@ class Order extends Model
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
 
-    protected $fillable = ['subtotal', 'status','user_id'];
+    protected $fillable = ['subtotal', 'status', 'user_id'];
 
     public function products()
     {
         return $this->belongsToMany(Product::class, 'orders_products')
-                    ->withPivot('quantity')
-                    ->withTimestamps();
+            ->withPivot('quantity')
+            ->withTimestamps();
     }
 
     public function users(): BelongsTo

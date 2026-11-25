@@ -6,7 +6,6 @@ use App\Http\Traits\CartTrait;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Http\Controllers\calculateSubTotalController;
 
 class CartController extends Controller
 {
@@ -22,10 +21,9 @@ class CartController extends Controller
         return $this->getCartItems();
     }
 
-
     public function index(calculateSubTotalController $subtotalCalculator, GetRecommendedProductsController $recommendedProducts)
     {
-        return Inertia::render('Cart/IndexCart',[
+        return Inertia::render('Cart/IndexCart', [
             'products' => (array) $this->getCartItems(), // vem da trait.
             'subtotal' => number_format($subtotalCalculator->calculate(), 2, '.', ''),
             'recommended_products' => (array) $recommendedProducts->handle(),
@@ -40,7 +38,7 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
         $product = Product::findOrFail($validated['product_id']);
-        if (!$product) {
+        if (! $product) {
             return back()->with([
                 'message' => 'Product not found',
                 'error' => true,
@@ -49,10 +47,11 @@ class CartController extends Controller
         $product->quantity = $validated['quantity'];
 
         $this->addToCart($product);
+
         return back()->with([
             'message' => 'Product successfully added to cart!',
             'success' => true,
-        ]);;
+        ]);
     }
 
     public function update(Product $product, Request $request)
@@ -61,12 +60,13 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        //verifica se o item está no carrinho
-        if(! $this->isInCart($product) ){
-            return back()->with('error','The product is not in the cart.');
+        // verifica se o item está no carrinho
+        if (! $this->isInCart($product)) {
+            return back()->with('error', 'The product is not in the cart.');
         }
 
-        $this->updateQuantity($product,$validated['quantity']);
+        $this->updateQuantity($product, $validated['quantity']);
+
         return back()->with('success', 'Quantity successfully updated.');
     }
 

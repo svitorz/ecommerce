@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreOrderRequest;
-use App\Models\Order;
-use Illuminate\Http\Request;
-use App\Http\Controllers\calculateSubTotalController;
-use App\Http\Controllers\PaymentController;
-use App\Models\Payment;
 use App\Actions\Payment\StoreNewPayment;
+use App\Models\Order;
+use App\Models\Payment;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     private Order $order;
+
     public function __construct(Order $order)
     {
         $this->order = $order;
@@ -24,8 +22,8 @@ class OrderController extends Controller
     public function index()
     {
         // dd($this->order->with('products')->get());
-        return Inertia('Orders/IndexOrders',[
-            'orders' => $this->order->with(['payments','products'])->orderBy('id', 'desc')->get(),
+        return Inertia('Orders/IndexOrders', [
+            'orders' => $this->order->with(['payments', 'products'])->orderBy('id', 'desc')->get(),
         ]);
     }
 
@@ -42,7 +40,7 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, calculateSubTotalController $subtotalCalculator,StoreNewPayment $storePayment)
+    public function store(Request $request, calculateSubTotalController $subtotalCalculator, StoreNewPayment $storePayment)
     {
         $validated = $request->validate([
             'fullName' => 'required|string|min:3|max:255',
@@ -58,14 +56,14 @@ class OrderController extends Controller
             ]
         );
         $payment = new Payment([
-           'full_name' => $validated['fullName'],
-            'ccv'=> $validated['ccv'],
-            'card_number'=> $validated['cardNumber'],
-            'card_expiration'=>\Carbon\Carbon::createFromFormat('m/Y', $validated['cardExpiration'])->startOfMonth()->format('Y-m-d'),
-            'order_id'=> $order,
+            'full_name' => $validated['fullName'],
+            'ccv' => $validated['ccv'],
+            'card_number' => $validated['cardNumber'],
+            'card_expiration' => \Carbon\Carbon::createFromFormat('m/Y', $validated['cardExpiration'])->startOfMonth()->format('Y-m-d'),
+            'order_id' => $order,
 
         ]);
-        $storePayment->handle($payment,$order);
+        $storePayment->handle($payment, $order);
 
         return to_route('orders.index');
     }
@@ -77,16 +75,17 @@ class OrderController extends Controller
     {
         //
     }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Order $order)
     {
         $validated = $request->validate([
-            'status' => 'string|required'
+            'status' => 'string|required',
         ]);
 
-        if($validated['status'] != 'canceled'){
+        if ($validated['status'] != 'canceled') {
             return abort(404);
         }
 

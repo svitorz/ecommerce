@@ -29,8 +29,6 @@ class StorePaymentRequest extends FormRequest
         ];
     }
 
-
-
     /**
      * Mensagens de validação personalizadas.
      */

@@ -13,7 +13,7 @@ class AddressController extends Controller
     {
         $validated = $request->validated();
         $user = auth()->user();
-        $address = $user->address()->first() ?? new Address();
+        $address = $user->address()->first() ?? new Address;
         $address->fill($validated);
         $user->address()->save($address);
     }

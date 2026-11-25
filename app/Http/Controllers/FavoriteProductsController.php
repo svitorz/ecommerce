@@ -3,22 +3,21 @@
 namespace App\Http\Controllers;
 
 // use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Product;
+use App\Models\User;
 
 class FavoriteProductsController extends Controller
 {
     public function store(User $user, Product $product): void
     {
-        if(!$this->isFavorite($user,$product))
-        {
+        if (! $this->isFavorite($user, $product)) {
             $user->favoriteProducts()->attach($product);
         }
     }
 
     public function destroy(User $user, Product $product): void
     {
-        if($this->isFavorite($user,$product)){
+        if ($this->isFavorite($user, $product)) {
             $user->favoriteProducts()->detach($product);
         }
     }

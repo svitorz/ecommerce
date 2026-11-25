@@ -13,13 +13,14 @@ class ProductRatingController extends Controller
 
     public function __construct(ProductRating $productRating)
     {
-       $this->productRating = $productRating;
+        $this->productRating = $productRating;
     }
+
     public function store(User $user, Product $product, Request $request)
     {
         $validatedData = $request->validate([
             'rating' => ['required', 'numeric', 'min:0', 'max:5'],
-            'feedback' => ['required','string','max:128']
+            'feedback' => ['required', 'string', 'max:128'],
         ]);
         $this->productRating->updateOrCreate(
             [

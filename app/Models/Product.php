@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Category;
-use Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
@@ -15,11 +13,10 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'price', 'stock','category_id'
+        'name', 'description', 'price', 'stock', 'category_id',
     ];
 
-
-    protected $appends = ['quantity','isFavorite'];
+    protected $appends = ['quantity', 'isFavorite'];
 
     protected function getIsFavoriteAttribute(): bool
     {
@@ -32,7 +29,6 @@ class Product extends Model
     {
         $this->attributes['isFavorite'] = $value;
     }
-
 
     protected function getQuantityAttribute(): int
     {
@@ -52,8 +48,8 @@ class Product extends Model
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'orders_products')
-                    ->withPivot('quantity')
-                    ->withTimestamps();
+            ->withPivot('quantity')
+            ->withTimestamps();
     }
 
     public function favoritedByUsers()
@@ -61,10 +57,8 @@ class Product extends Model
         return $this->belongsToMany(User::class, 'favorite_products');
     }
 
-
     public function ratings(): HasMany
     {
         return $this->hasMany(ProductRating::class);
     }
-
 }

@@ -23,7 +23,7 @@ class StoreCategoryRequest extends FormRequest
     {
         return [
             'name' => 'string|max:128|required',
-            'description' => 'string|max:1024|required'
+            'description' => 'string|max:1024|required',
         ];
     }
 }
