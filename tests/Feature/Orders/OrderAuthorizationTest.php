@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Order;
+use App\Models\Product;
 
 it('lista apenas os pedidos do usuário autenticado', function () {
     $ana = customer();
@@ -57,4 +58,33 @@ it('rejeita status diferente de canceled', function () {
         ->assertSessionHasErrors('status');
 
     expect($order->fresh()->status)->toBe('transporting');
+});
+
+it('devolve o estoque ao cancelar o pedido', function () {
+    $ana = customer();
+    $product = Product::factory()->create(['stock' => 5]);
+    $order = Order::factory()->create(['user_id' => $ana->id, 'status' => 'transporting']);
+    $order->products()->attach($product, ['quantity' => 2, 'unit_price' => $product->price]);
+
+    $this->actingAs($ana)
+        ->put(route('orders.update', $order), ['status' => 'canceled'])
+        ->assertRedirect();
+
+    expect($product->fresh()->stock)->toBe(7)
+        ->and($order->fresh()->status)->toBe('canceled');
+});
+
+it('não devolve estoque duas vezes ao cancelar o mesmo pedido', function () {
+    $ana = customer();
+    $product = Product::factory()->create(['stock' => 5]);
+    $order = Order::factory()->create(['user_id' => $ana->id, 'status' => 'transporting']);
+    $order->products()->attach($product, ['quantity' => 2, 'unit_price' => $product->price]);
+
+    $this->actingAs($ana)->put(route('orders.update', $order), ['status' => 'canceled']);
+
+    $this->actingAs($ana)
+        ->put(route('orders.update', $order), ['status' => 'canceled'])
+        ->assertSessionHasErrors('status');
+
+    expect($product->fresh()->stock)->toBe(7);
 });

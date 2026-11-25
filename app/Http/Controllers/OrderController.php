@@ -8,6 +8,7 @@ use App\Http\Traits\CartTrait;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class OrderController extends Controller
@@ -73,7 +74,15 @@ class OrderController extends Controller
             return back()->withErrors(['status' => 'Este pedido não pode mais ser cancelado.']);
         }
 
-        $order->update(['status' => 'canceled']);
+        DB::transaction(function () use ($order) {
+            $order->load('products');
+
+            foreach ($order->products as $product) {
+                $product->increment('stock', $product->pivot->quantity);
+            }
+
+            $order->update(['status' => 'canceled']);
+        });
 
         return back()->with('success', 'Pedido cancelado.');
     }
