@@ -16,6 +16,8 @@ class Product extends Model
         'name', 'description', 'price', 'stock', 'category_id',
     ];
 
+    protected $casts = ['price' => 'float'];
+
     protected $appends = ['quantity', 'isFavorite'];
 
     protected function getIsFavoriteAttribute(): bool
