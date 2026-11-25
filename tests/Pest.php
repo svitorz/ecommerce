@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -41,7 +43,12 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function admin(): User
 {
-    // ..
+    return User::factory()->admin()->create();
+}
+
+function customer(): User
+{
+    return User::factory()->create();
 }
