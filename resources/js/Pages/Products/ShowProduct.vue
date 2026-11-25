@@ -15,6 +15,7 @@ import FavoriteButton from "../Favorites/FavoriteButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { usePage } from "@inertiajs/vue3";
 import StarRating from "@/Components/StarRating.vue";
+import InputError from "@/Components/InputError.vue";
 import ProductRatings from "@/Components/ProductRatings.vue";
 const page = usePage();
 const props = defineProps({
@@ -180,7 +181,10 @@ const calculateRating = () => {
                         <DialogModal :show="confirmingDelete" @close="closeModal">
                             <template #title> Delete this Product? </template>
 
-                            <template #content> This action is irreversible! </template>
+                            <template #content>
+                                This action is irreversible!
+                                <InputError :message="form.errors.product" class="mt-2" />
+                            </template>
 
                             <template #footer>
                                 <SecondaryButton :type="button" @click="closeModal">

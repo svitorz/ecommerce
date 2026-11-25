@@ -8,6 +8,7 @@ import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { Link } from "@inertiajs/vue3";
+import InputError from "@/Components/InputError.vue";
 defineProps({
     category: {
         type: Object,
@@ -83,7 +84,10 @@ const deleteCategory = (deleteCategoryId) => {
             <DialogModal :show="confirmingDelete" @close="closeModal">
                 <template #title> Delete this Category? </template>
 
-                <template #content> This action is irreversible! </template>
+                <template #content>
+                    This action is irreversible!
+                    <InputError :message="form.errors.category" class="mt-2" />
+                </template>
 
                 <template #footer>
                     <SecondaryButton :type="button" @click="closeModal"> Cancel </SecondaryButton>
