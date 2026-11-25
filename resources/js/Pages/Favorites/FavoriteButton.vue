@@ -1,9 +1,8 @@
 <script setup>
-import { router, usePage } from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3";
 import ToastManager from "@/Components/ToastManager.vue";
 import { ref } from "vue";
 const toastRef = ref(null);
-const { props: page } = usePage();
 const props = defineProps({
     product: {
         type: Object,
@@ -17,7 +16,6 @@ const addToFavorites = async () => {
     try {
         await router.visit(
             route("favorite.store", {
-                user: page.auth.user,
                 product: localProduct.value.id,
             }),
             {
@@ -29,7 +27,7 @@ const addToFavorites = async () => {
                     localProduct.value.isFavorite = true;
                 },
                 onError: () => {
-                    toastRef.value.showToast("Error removing localProduct from cart.", "error");
+                    toastRef.value.showToast("Error adding product to favorites.", "error");
                 },
             },
         );
@@ -43,11 +41,10 @@ const removeFromFavorites = async () => {
     try {
         await router.visit(
             route("favorite.destroy", {
-                user: page.auth.user,
                 product: localProduct.value.id,
             }),
             {
-                method: "POST",
+                method: "DELETE",
                 preserveState: true,
                 preserveScroll: true,
                 onSuccess: () => {

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FavoriteProductsController;
 use App\Http\Controllers\GetRecommendedProductsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -47,8 +48,8 @@ Route::middleware('auth')->group(function () {
     // endereço
     Route::post('/address', [AddressController::class, 'store'])->name('address.store');
 
-    Route::post('/favorite/{user}/{product}', [App\Http\Controllers\FavoriteProductsController::class, 'store'])->name('favorite.store');
-    Route::delete('/favorite/{user}/{product}', [App\Http\Controllers\FavoriteProductsController::class, 'destroy'])->name('favorite.destroy');
+    Route::post('/favorites/{product}', [FavoriteProductsController::class, 'store'])->name('favorite.store');
+    Route::delete('/favorites/{product}', [FavoriteProductsController::class, 'destroy'])->name('favorite.destroy');
 
     Route::post('/rating/{user}/{product}', [App\Http\Controllers\ProductRatingController::class, 'store'])->name('rating.store');
 });
