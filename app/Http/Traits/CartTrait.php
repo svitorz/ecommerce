@@ -19,7 +19,7 @@ trait CartTrait
     /**
      * Adiciona um item ao carrinho do usuário.
      */
-    public function addToCart(Product $product): void
+    public function addToCart(Product $product, int $quantity): void
     {
         $this->initializeCartSession();
 
@@ -27,13 +27,7 @@ trait CartTrait
             return;
         }
 
-        $productArray = $product->toArray();
-        $productArray['quantity'] = $product->quantity;
-
-        $cart = session()->get('cart', []);
-        $cart[] = $productArray;
-
-        session()->put('cart', $cart);
+        session()->push('cart', ['id' => $product->id, 'quantity' => $quantity]);
     }
 
     /**
@@ -80,28 +74,35 @@ trait CartTrait
     /**
      * Retorna todos os produtos do carrinho.
      */
-    public function getCartItems()
+    public function getCartItems(): array
     {
         $cart = session()->get('cart', []);
-        $productIds = collect($cart)->pluck('id');
 
-        $products = Product::with('category', 'favoritedByUsers')
-            ->whereIn('id', $productIds)
-            ->get();
+        $products = Product::with('category')
+            ->whereIn('id', collect($cart)->pluck('id'))
+            ->get()
+            ->keyBy('id');
 
-        return collect($cart)->map(function ($item) use ($products) {
-            $product = $products->firstWhere('id', $item['id']);
+        $existing = array_values(array_filter($cart, fn ($item) => $products->has($item['id'])));
+
+        if (count($existing) !== count($cart)) {
+            session()->put('cart', $existing);
+        }
+
+        return array_map(function ($item) use ($products) {
+            $product = $products->get($item['id']);
 
             return [
                 'id' => $product->id,
                 'name' => $product->name,
                 'price' => $product->price,
                 'quantity' => $item['quantity'],
+                'stock' => $product->stock,
                 'isFavorite' => $product->isFavorite,
                 'category' => $product->category->name,
                 'category_id' => $product->category_id,
             ];
-        })->toArray();
+        }, $existing);
     }
 
     /**

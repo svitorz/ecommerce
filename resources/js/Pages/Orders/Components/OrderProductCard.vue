@@ -59,6 +59,7 @@ const removeFromCart = async (product) => {
     loading.value = true;
     try {
         await router.visit(route("cart.destroy", { product: product }), {
+            method: "delete",
             preserveState: true,
             preserveScroll: true,
             onSuccess: () => {

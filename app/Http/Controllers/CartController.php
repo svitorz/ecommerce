@@ -38,15 +38,12 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
         $product = Product::findOrFail($validated['product_id']);
-        if (! $product) {
-            return back()->with([
-                'message' => 'Product not found',
-                'error' => true,
-            ]);
-        }
-        $product->quantity = $validated['quantity'];
 
-        $this->addToCart($product);
+        if ($validated['quantity'] > $product->stock) {
+            return back()->withErrors(['quantity' => 'Quantidade maior que o estoque disponível.']);
+        }
+
+        $this->addToCart($product, $validated['quantity']);
 
         return back()->with([
             'message' => 'Product successfully added to cart!',
@@ -62,7 +59,11 @@ class CartController extends Controller
 
         // verifica se o item está no carrinho
         if (! $this->isInCart($product)) {
-            return back()->with('error', 'The product is not in the cart.');
+            return back()->withErrors(['cart' => 'O produto não está no carrinho.']);
+        }
+
+        if ($validated['quantity'] > $product->stock) {
+            return back()->withErrors(['quantity' => 'Quantidade maior que o estoque disponível.']);
         }
 
         $this->updateQuantity($product, $validated['quantity']);
@@ -72,6 +73,8 @@ class CartController extends Controller
 
     public function destroy(Product $product)
     {
-        $this->removefromCart($product);
+        $this->removeFromCart($product);
+
+        return back();
     }
 }

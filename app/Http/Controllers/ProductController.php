@@ -49,7 +49,7 @@ class ProductController extends Controller implements HasMiddleware
                 'price' => $product->price,
                 'stock' => $product->stock,
                 'inCart' => $this->isInCart($product),
-                'quantity' => $cartProduct->quantity ?? 1,
+                'quantity' => $cartProduct['quantity'] ?? 1,
                 'isFavorite' => $product->favoritedByUsers()->where('user_id', auth()->user()->id)->exists(),
             ];
         });

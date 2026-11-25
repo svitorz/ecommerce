@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/', [CartController::class, 'store'])->name('cart.store');
     Route::put('/cart/{product}/update', [CartController::class, 'update'])->name('cart.update');
-    Route::get('/cart/destroy/{product}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::delete('/cart/{product}', [CartController::class, 'destroy'])->name('cart.destroy');
 
     // endereço
     Route::post('/address', [AddressController::class, 'store'])->name('address.store');
