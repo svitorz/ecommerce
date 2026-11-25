@@ -2,6 +2,7 @@
 
 namespace App\Actions\Order;
 
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -47,7 +48,7 @@ class PlaceOrder
             }
 
             $order = $user->orders()->create([
-                'status' => 'pending_payment',
+                'status' => OrderStatus::PendingPayment,
                 'subtotal' => round($subtotal, 2),
             ]);
 
@@ -64,7 +65,7 @@ class PlaceOrder
             ]);
 
             // Pagamento simulado: aprovado na hora.
-            $order->update(['status' => 'transporting']);
+            $order->update(['status' => OrderStatus::Transporting]);
 
             return $order;
         });

@@ -28,7 +28,7 @@ it('finaliza o pedido gravando itens, preço do momento e baixando o estoque', f
     $order = Order::with('products', 'payments')->first();
 
     expect((float) $order->subtotal)->toBe(22.5)
-        ->and($order->status)->toBe('transporting')
+        ->and($order->status->value)->toBe('transporting')
         ->and($order->products)->toHaveCount(2);
 
     $pivotA = $order->products->firstWhere('id', $a->id)->pivot;

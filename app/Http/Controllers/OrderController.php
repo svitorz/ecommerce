@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Order\PlaceOrder;
+use App\Enums\OrderStatus;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Traits\CartTrait;
 use App\Models\Order;
@@ -70,7 +71,7 @@ class OrderController extends Controller
 
         $request->validate(['status' => ['required', 'in:canceled']]);
 
-        if (in_array($order->status, ['completed', 'canceled'], true)) {
+        if (in_array($order->status, [OrderStatus::Completed, OrderStatus::Canceled], true)) {
             return back()->withErrors(['status' => 'Este pedido não pode mais ser cancelado.']);
         }
 
@@ -81,7 +82,7 @@ class OrderController extends Controller
                 $product->increment('stock', $product->pivot->quantity);
             }
 
-            $order->update(['status' => 'canceled']);
+            $order->update(['status' => OrderStatus::Canceled]);
         });
 
         return back()->with('success', 'Pedido cancelado.');

@@ -24,7 +24,7 @@ it('impede outro usuário de cancelar pedido alheio', function () {
         ->put(route('orders.update', $order), ['status' => 'canceled'])
         ->assertForbidden();
 
-    expect($order->fresh()->status)->toBe('pending_payment');
+    expect($order->fresh()->status->value)->toBe('pending_payment');
 });
 
 it('permite o dono cancelar pedido pendente', function () {
@@ -35,7 +35,7 @@ it('permite o dono cancelar pedido pendente', function () {
         ->put(route('orders.update', $order), ['status' => 'canceled'])
         ->assertRedirect();
 
-    expect($order->fresh()->status)->toBe('canceled');
+    expect($order->fresh()->status->value)->toBe('canceled');
 });
 
 it('impede cancelar pedido já concluído', function () {
@@ -46,7 +46,7 @@ it('impede cancelar pedido já concluído', function () {
         ->put(route('orders.update', $order), ['status' => 'canceled'])
         ->assertSessionHasErrors('status');
 
-    expect($order->fresh()->status)->toBe('completed');
+    expect($order->fresh()->status->value)->toBe('completed');
 });
 
 it('rejeita status diferente de canceled', function () {
@@ -57,7 +57,7 @@ it('rejeita status diferente de canceled', function () {
         ->put(route('orders.update', $order), ['status' => 'completed'])
         ->assertSessionHasErrors('status');
 
-    expect($order->fresh()->status)->toBe('transporting');
+    expect($order->fresh()->status->value)->toBe('transporting');
 });
 
 it('devolve o estoque ao cancelar o pedido', function () {
@@ -71,7 +71,7 @@ it('devolve o estoque ao cancelar o pedido', function () {
         ->assertRedirect();
 
     expect($product->fresh()->stock)->toBe(7)
-        ->and($order->fresh()->status)->toBe('canceled');
+        ->and($order->fresh()->status->value)->toBe('canceled');
 });
 
 it('não devolve estoque duas vezes ao cancelar o mesmo pedido', function () {
