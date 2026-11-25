@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     // buscas
     Route::get('/search/{searchKey}', [ProductController::class, 'searchProduct'])->name('search');
 
-    Route::resource('categories', CategoryController::class);
+    Route::resource('categories', CategoryController::class)->except(['show']);
 
     Route::resource('products', ProductController::class);
 

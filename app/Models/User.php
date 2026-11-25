@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -65,17 +64,14 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'isAdmin' => 'boolean',
             'password' => 'hashed',
         ];
     }
 
     public function isAdmin(): bool
     {
-        if (Auth::check()) {
-            return $this->isAdmin;
-        }
-
-        return false;
+        return (bool) $this->isAdmin;
     }
 
     public function address(): HasOne
