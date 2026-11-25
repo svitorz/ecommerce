@@ -13,8 +13,7 @@ class Payment extends Model
 
     protected $fillable = [
         'full_name',
-        'ccv',
-        'card_number',
+        'card_last_four',
         'card_expiration',
         'order_id',
     ];

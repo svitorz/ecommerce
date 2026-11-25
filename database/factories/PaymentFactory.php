@@ -17,8 +17,7 @@ class PaymentFactory extends Factory
         return [
             'order_id' => Order::factory(),
             'full_name' => $this->faker->name(),
-            'ccv' => $this->faker->numberBetween(100, 999),
-            'card_number' => $this->faker->creditCardNumber(),
+            'card_last_four' => (string) fake()->numberBetween(1000, 9999),
             'card_expiration' => fake()->dateTimeBetween('now', '+5 years')->format('Y-m-01'),
         ];
     }

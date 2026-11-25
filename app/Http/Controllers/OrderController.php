@@ -48,7 +48,7 @@ class OrderController extends Controller
     {
         $validated = $request->validate([
             'fullName' => 'required|string|min:3|max:255',
-            'ccv' => 'required|digits:3',
+            'ccv' => 'required|digits_between:3,4',
             'cardNumber' => 'required|regex:/^[0-9\s]{16,20}$/', // Aceita números e espaços
             'cardExpiration' => 'required|date_format:m/Y|after_or_equal:today',
         ]);
@@ -61,10 +61,8 @@ class OrderController extends Controller
         );
         $payment = new Payment([
             'full_name' => $validated['fullName'],
-            'ccv' => $validated['ccv'],
-            'card_number' => $validated['cardNumber'],
+            'card_last_four' => substr(preg_replace('/\D/', '', $validated['cardNumber']), -4),
             'card_expiration' => \Carbon\Carbon::createFromFormat('m/Y', $validated['cardExpiration'])->startOfMonth()->format('Y-m-d'),
-            'order_id' => $order,
 
         ]);
         $storePayment->handle($payment, $order);

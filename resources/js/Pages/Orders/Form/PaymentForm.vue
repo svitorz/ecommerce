@@ -1,24 +1,20 @@
 <script setup>
-import { ref } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { useForm } from "@inertiajs/vue3";
-import { router } from "@inertiajs/vue3";
+import InputError from "@/Components/InputError.vue";
 
 const props = defineProps({
     amount: Number,
 });
 
-// Estado reativo para o valor do input
-const formattedDate = ref("");
-
 const form = useForm({
-    fullName: "Vitor Fábio",
-    cardNumber: "1231 2312 3123 1231",
-    ccv: 123,
-    cardExpiration: "02/2026",
+    fullName: "",
+    cardNumber: "",
+    ccv: "",
+    cardExpiration: "",
 });
 function submit() {
-    router.post(route("orders.store"), form);
+    form.post(route("orders.store"));
 }
 
 function applyCardMask(event) {
@@ -51,7 +47,7 @@ function formatInput(event) {
     }
 
     // Atualiza o valor formatado
-    formattedDate.value = value;
+    form.cardExpiration = value;
 }
 </script>
 <template>
@@ -82,6 +78,7 @@ function formatInput(event) {
                                     placeholder="Bonnie Green"
                                     required
                                 />
+                                <InputError :message="form.errors.fullName" class="mt-2" />
                             </div>
 
                             <div class="col-span-2 sm:col-span-1">
@@ -101,6 +98,7 @@ function formatInput(event) {
                                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pe-10 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                                     required
                                 />
+                                <InputError :message="form.errors.cardNumber" class="mt-2" />
                             </div>
 
                             <div>
@@ -138,6 +136,10 @@ function formatInput(event) {
                                         maxlength="7"
                                         class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-9 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                                         required
+                                    />
+                                    <InputError
+                                        :message="form.errors.cardExpiration"
+                                        class="mt-2"
                                     />
                                 </div>
                             </div>
@@ -177,14 +179,16 @@ function formatInput(event) {
                                 </label>
                                 <input
                                     v-model="form.ccv"
-                                    maxlength="3"
-                                    type="number"
+                                    maxlength="4"
+                                    type="text"
+                                    inputmode="numeric"
                                     id="cvv-input"
                                     aria-describedby="helper-text-explanation"
                                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                                     placeholder="•••"
                                     required
                                 />
+                                <InputError :message="form.errors.ccv" class="mt-2" />
                             </div>
                         </div>
 
