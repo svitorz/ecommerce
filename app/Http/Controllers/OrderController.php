@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Actions\Payment\StoreNewPayment;
 use App\Models\Order;
 use App\Models\Payment;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class OrderController extends Controller
 {
@@ -19,11 +21,13 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // dd($this->order->with('products')->get());
         return Inertia('Orders/IndexOrders', [
-            'orders' => $this->order->with(['payments', 'products'])->orderBy('id', 'desc')->get(),
+            'orders' => $request->user()->orders()
+                ->with(['payments', 'products'])
+                ->latest('id')
+                ->get(),
         ]);
     }
 
@@ -69,35 +73,20 @@ class OrderController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Order $order): RedirectResponse
     {
-        $validated = $request->validate([
-            'status' => 'string|required',
-        ]);
+        Gate::authorize('update', $order);
 
-        if ($validated['status'] != 'canceled') {
-            return abort(404);
+        $request->validate(['status' => ['required', 'in:canceled']]);
+
+        if (in_array($order->status, ['completed', 'canceled'], true)) {
+            return back()->withErrors(['status' => 'Este pedido não pode mais ser cancelado.']);
         }
 
-        $order->status = $validated['status'];
-        $order->save();
-    }
+        $order->update(['status' => 'canceled']);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+        return back()->with('success', 'Pedido cancelado.');
     }
 }

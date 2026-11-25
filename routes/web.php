@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('products', ProductController::class);
 
-    Route::resource('orders', OrderController::class);
+    Route::resource('orders', OrderController::class)->only(['index', 'create', 'store', 'update']);
 
     // carrinho
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
