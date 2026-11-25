@@ -72,9 +72,7 @@ const deleteCategory = (deleteCategoryId) => {
                     <DropdownLink :href="route('categories.edit', category.id)">
                         Edit Category
                     </DropdownLink>
-                    <div
-                        class="border-t border-gray-200 dark:border-gray-600"
-                    />
+                    <div class="border-t border-gray-200 dark:border-gray-600" />
                     <DropdownLink as="button" @click="confirmDelete">
                         Delete Category
                     </DropdownLink>
@@ -88,9 +86,7 @@ const deleteCategory = (deleteCategoryId) => {
                 <template #content> This action is irreversible! </template>
 
                 <template #footer>
-                    <SecondaryButton :type="button" @click="closeModal">
-                        Cancel
-                    </SecondaryButton>
+                    <SecondaryButton :type="button" @click="closeModal"> Cancel </SecondaryButton>
 
                     <DangerButton
                         :type="button"
@@ -106,9 +102,7 @@ const deleteCategory = (deleteCategoryId) => {
                 </template>
             </DialogModal>
             <!--  Confirmation Dialog -->
-            <h5
-                class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-            >
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {{ category?.name }}
             </h5>
 
@@ -124,9 +118,7 @@ const deleteCategory = (deleteCategoryId) => {
                     })
                 "
             >
-                <PrimaryButton :type="button">
-                    See related Products
-                </PrimaryButton>
+                <PrimaryButton :type="button"> See related Products </PrimaryButton>
             </Link>
         </div>
     </div>

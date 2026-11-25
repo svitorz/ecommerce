@@ -25,17 +25,11 @@ const addToFavorites = async () => {
                 preserveState: true,
                 preserveScroll: true,
                 onSuccess: () => {
-                    toastRef.value.showToast(
-                        "Product added to favorites!",
-                        "success",
-                    );
+                    toastRef.value.showToast("Product added to favorites!", "success");
                     localProduct.value.isFavorite = true;
                 },
                 onError: () => {
-                    toastRef.value.showToast(
-                        "Error removing localProduct from cart.",
-                        "error",
-                    );
+                    toastRef.value.showToast("Error removing localProduct from cart.", "error");
                 },
             },
         );
@@ -57,18 +51,12 @@ const removeFromFavorites = async () => {
                 preserveState: true,
                 preserveScroll: true,
                 onSuccess: () => {
-                    toastRef.value.showToast(
-                        "Product removed from favorites!",
-                        "warning",
-                    );
+                    toastRef.value.showToast("Product removed from favorites!", "warning");
                     localProduct.value.isFavorite = false;
                     console.log("Success");
                 },
                 onError: () => {
-                    toastRef.value.showToast(
-                        "Error removing product from favorites.",
-                        "error",
-                    );
+                    toastRef.value.showToast("Error removing product from favorites.", "error");
                     console.log("Error");
                 },
             },
@@ -131,9 +119,7 @@ const removeFromFavorites = async () => {
                     fill="currentColor"
                     viewBox="0 0 24 24"
                 >
-                    <path
-                        d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"
-                    />
+                    <path d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z" />
                 </svg>
             </button>
             <div

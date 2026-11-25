@@ -11,12 +11,7 @@ const props = defineProps({
         type: String,
         required: true,
         validator: (value) =>
-            [
-                "pending_payment",
-                "transporting",
-                "completed",
-                "canceled",
-            ].includes(value),
+            ["pending_payment", "transporting", "completed", "canceled"].includes(value),
     },
     order_id: {
         type: String,
@@ -75,29 +70,23 @@ const cancelOrder = async (id) => {
         return;
     }
     try {
-        await router.visit(route("orders.update",id), {
-            method: 'PUT',
+        await router.visit(route("orders.update", id), {
+            method: "PUT",
             data: {
                 status: "canceled",
             },
             preserveScroll: true,
             preserveState: true,
             onSuccess: () => {
-                toastRef.value.showToast(
-                    "Order canceled!",
-                    "success"
-                );
-                props.status.value = 'canceled';
+                toastRef.value.showToast("Order canceled!", "success");
+                props.status.value = "canceled";
             },
             onError: () => {
-                toastRef.value.showToast(
-                    "Error to cancel order.",
-                    "error"
-                );
+                toastRef.value.showToast("Error to cancel order.", "error");
             },
             onFinish: () => {
-                closeModal()
-            }
+                closeModal();
+            },
         });
     } catch (error) {
         toastRef.value.showToast("Unexpected error", "error");
@@ -150,15 +139,10 @@ const cancelOrder = async (id) => {
                     />
                 </svg>
             </span>
-            <h4
-                class="mb-0.5 text-base font-semibold"
-                :class="getTextColorClass('delivered')"
-            >
+            <h4 class="mb-0.5 text-base font-semibold" :class="getTextColorClass('delivered')">
                 Delivery
             </h4>
-            <p class="text-sm" :class="getTextColorClass('delivered')">
-                Order delivered
-            </p>
+            <p class="text-sm" :class="getTextColorClass('delivered')">Order delivered</p>
         </li>
 
         <!-- Shipping -->
@@ -204,15 +188,10 @@ const cancelOrder = async (id) => {
                     />
                 </svg>
             </span>
-            <h4
-                class="mb-0.5 text-base font-semibold"
-                :class="getTextColorClass('shipping')"
-            >
+            <h4 class="mb-0.5 text-base font-semibold" :class="getTextColorClass('shipping')">
                 Shipping
             </h4>
-            <p class="text-sm" :class="getTextColorClass('shipping')">
-                Order in transit
-            </p>
+            <p class="text-sm" :class="getTextColorClass('shipping')">Order in transit</p>
         </li>
 
         <!-- Payment -->
@@ -265,10 +244,7 @@ const cancelOrder = async (id) => {
                     />
                 </svg>
             </span>
-            <h4
-                class="mb-0.5 text-base font-semibold"
-                :class="getTextColorClass('payment')"
-            >
+            <h4 class="mb-0.5 text-base font-semibold" :class="getTextColorClass('payment')">
                 Payment
             </h4>
             <p class="text-sm" :class="getTextColorClass('payment')">
@@ -286,8 +262,8 @@ const cancelOrder = async (id) => {
                     status === 'canceled'
                         ? 'bg-red-100 dark:bg-red-900'
                         : isStepActive('order_placed')
-                        ? 'bg-primary-100 dark:bg-primary-900'
-                        : 'bg-gray-100 dark:bg-gray-700',
+                          ? 'bg-primary-100 dark:bg-primary-900'
+                          : 'bg-gray-100 dark:bg-gray-700',
                 ]"
             >
                 <svg
@@ -385,15 +361,9 @@ const cancelOrder = async (id) => {
         <template #content> This action is irreversible! </template>
 
         <template #footer>
-            <SecondaryButton :type="button" @click="closeModal">
-                Go back
-            </SecondaryButton>
+            <SecondaryButton :type="button" @click="closeModal"> Go back </SecondaryButton>
 
-            <DangerButton
-                :type="button"
-                class="ms-3"
-                @click="cancelOrder(order_id)"
-            >
+            <DangerButton :type="button" class="ms-3" @click="cancelOrder(order_id)">
                 Confirm
             </DangerButton>
         </template>

@@ -27,18 +27,12 @@ const props = defineProps({
 
         <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
-                <h2
-                    class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl"
-                >
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
                     Shopping Cart
                 </h2>
 
-                <div
-                    class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8"
-                >
-                    <div
-                        class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl"
-                    >
+                <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
+                    <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
                         <div class="space-y-6" v-if="products.length > 0">
                             <div
                                 v-for="product in products"
@@ -52,10 +46,7 @@ const props = defineProps({
                             <h1 class="text-center text-white text-lg">No matches found.</h1>
                         </div>
                     </div>
-                    <OrderSummary
-                        :subtotal="subtotal"
-                        v-if="products.length > 0"
-                    />
+                    <OrderSummary :subtotal="subtotal" v-if="products.length > 0" />
                 </div>
                 <div
                     class="xl:mt-8 xl:block"
@@ -64,9 +55,7 @@ const props = defineProps({
                         Array.isArray(props.recommended_products)
                     "
                 >
-                    <h3
-                        class="text-2xl font-semibold text-gray-900 dark:text-white"
-                    >
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">
                         People also bought
                     </h3>
                     <div class="mt-6 grid grid-cols-3 gap-4 sm:mt-8">

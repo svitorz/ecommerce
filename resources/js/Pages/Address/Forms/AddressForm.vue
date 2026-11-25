@@ -121,14 +121,9 @@ const saveAddress = () => {
             </div>
         </template>
         <template #actions>
-            <ActionMessage :on="form.recentlySuccessful" class="me-3">
-                Saved.
-            </ActionMessage>
+            <ActionMessage :on="form.recentlySuccessful" class="me-3"> Saved. </ActionMessage>
 
-            <PrimaryButton
-                :class="{ 'opacity-25': form.processing }"
-                :disabled="form.processing"
-            >
+            <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                 Save
             </PrimaryButton>
         </template>

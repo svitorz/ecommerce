@@ -8,21 +8,15 @@ const props = defineProps({ subtotal: Number });
         <div
             class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6"
         >
-            <p class="text-xl font-semibold text-gray-900 dark:text-white">
-                Order summary
-            </p>
+            <p class="text-xl font-semibold text-gray-900 dark:text-white">Order summary</p>
 
             <div class="space-y-4">
                 <div class="space-y-2">
                     <dl class="flex items-center justify-between gap-4">
-                        <dt
-                            class="text-base font-normal text-gray-500 dark:text-gray-400"
-                        >
+                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400">
                             Original price
                         </dt>
-                        <dd
-                            class="text-base font-medium text-gray-900 dark:text-white"
-                        >
+                        <dd class="text-base font-medium text-gray-900 dark:text-white">
                             $ {{ subtotal }}
                         </dd>
                     </dl>
@@ -30,31 +24,21 @@ const props = defineProps({ subtotal: Number });
                 <dl
                     class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700"
                 >
-                    <dt
-                        class="text-base font-bold text-gray-900 dark:text-white"
-                    >
-                        Total
-                    </dt>
-                    <dd
-                        class="text-base font-bold text-gray-900 dark:text-white"
-                    >
+                    <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
+                    <dd class="text-base font-bold text-gray-900 dark:text-white">
                         $ {{ subtotal }}
                     </dd>
                 </dl>
             </div>
 
             <Link :href="route('orders.create')">
-                <PrimaryButton  class="flex justify-center items-center w-full">
+                <PrimaryButton class="flex justify-center items-center w-full">
                     Proceed to Checkout
                 </PrimaryButton>
             </Link>
 
             <div class="flex items-center justify-center gap-2">
-                <span
-                    class="text-sm font-normal text-gray-500 dark:text-gray-400"
-                >
-                    or
-                </span>
+                <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
                 <Link
                     :href="route('products.index')"
                     title=""
