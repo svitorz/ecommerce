@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Payment\StoreNewPayment;
+use App\Actions\Order\PlaceOrder;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Traits\CartTrait;
 use App\Models\Order;
-use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class OrderController extends Controller
 {
+    use CartTrait;
+
     private Order $order;
 
     public function __construct(Order $order)
@@ -36,6 +39,10 @@ class OrderController extends Controller
      */
     public function create(calculateSubTotalController $subtotalCalculator)
     {
+        if ($this->getCartItems() === []) {
+            return to_route('cart.index')->withErrors(['cart' => 'Seu carrinho está vazio.']);
+        }
+
         return Inertia('Orders/Form/CreateOrder', [
             'amount' => number_format($subtotalCalculator->calculate(), 2, '.', ''),
         ]);
@@ -44,30 +51,13 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, calculateSubTotalController $subtotalCalculator, StoreNewPayment $storePayment)
+    public function store(StoreOrderRequest $request, PlaceOrder $placeOrder): RedirectResponse
     {
-        $validated = $request->validate([
-            'fullName' => 'required|string|min:3|max:255',
-            'ccv' => 'required|digits_between:3,4',
-            'cardNumber' => 'required|regex:/^[0-9\s]{16,20}$/', // Aceita números e espaços
-            'cardExpiration' => 'required|date_format:m/Y|after_or_equal:today',
-        ]);
-        $order = Order::create(
-            [
-                'status' => 'pending_payment',
-                'subtotal' => number_format($subtotalCalculator->calculate(), 2, '.', ''),
-                'user_id' => auth()->user()->id,
-            ]
-        );
-        $payment = new Payment([
-            'full_name' => $validated['fullName'],
-            'card_last_four' => substr(preg_replace('/\D/', '', $validated['cardNumber']), -4),
-            'card_expiration' => \Carbon\Carbon::createFromFormat('m/Y', $validated['cardExpiration'])->startOfMonth()->format('Y-m-d'),
+        $placeOrder->handle($request->user(), $this->getCartItems(), $request->validated());
 
-        ]);
-        $storePayment->handle($payment, $order);
+        $this->clearCart();
 
-        return to_route('orders.index');
+        return to_route('orders.index')->with('success', 'Pedido realizado com sucesso!');
     }
 
     /**

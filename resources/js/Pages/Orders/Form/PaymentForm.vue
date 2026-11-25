@@ -62,6 +62,7 @@ function formatInput(event) {
                         @submit.prevent="submit"
                         class="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:max-w-xl lg:p-8"
                     >
+                        <InputError :message="form.errors.cart" class="mb-4" />
                         <div class="mb-6 grid grid-cols-2 gap-4">
                             <div class="col-span-2 sm:col-span-1">
                                 <label
