@@ -103,6 +103,12 @@ class CategoryController extends Controller implements HasMiddleware
      */
     public function destroy(Category $category)
     {
+        if ($category->product()->exists()) {
+            return back()->withErrors(['category' => 'Não é possível excluir categoria que possui produtos.']);
+        }
+
         $category->delete();
+
+        return back();
     }
 }

@@ -145,6 +145,10 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function destroy(Product $product)
     {
+        if ($product->orders()->exists()) {
+            return back()->withErrors(['product' => 'Não é possível excluir produto que já foi pedido.']);
+        }
+
         $product->delete();
 
         return to_route('products.index');
