@@ -35,10 +35,10 @@ class StoreOrderRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'cardNumber.regex' => 'Número do cartão inválido.',
-            'ccv.digits_between' => 'O CVV deve ter 3 ou 4 dígitos.',
+            'cardNumber.regex' => 'Invalid card number.',
+            'ccv.digits_between' => 'The CVV must have 3 or 4 digits.',
             'cardExpiration.date_format' => 'Use o formato MM/AAAA.',
-            'cardExpiration.after_or_equal' => 'Cartão vencido.',
+            'cardExpiration.after_or_equal' => 'The card has expired.',
         ];
     }
 }

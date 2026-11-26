@@ -40,7 +40,7 @@ class OrderController extends Controller
     public function create(Cart $cart)
     {
         if ($cart->items() === []) {
-            return to_route('cart.index')->withErrors(['cart' => 'Seu carrinho está vazio.']);
+            return to_route('cart.index')->withErrors(['cart' => 'Your cart is empty.']);
         }
 
         return Inertia('Orders/Form/CreateOrder', [
@@ -57,7 +57,7 @@ class OrderController extends Controller
 
         $cart->clear();
 
-        return to_route('orders.index')->with('success', 'Pedido realizado com sucesso!');
+        return to_route('orders.index')->with('success', 'Order placed successfully!');
     }
 
     /**
@@ -70,7 +70,7 @@ class OrderController extends Controller
         $request->validate(['status' => ['required', 'in:canceled']]);
 
         if (in_array($order->status, [OrderStatus::Completed, OrderStatus::Canceled], true)) {
-            return back()->withErrors(['status' => 'Este pedido não pode mais ser cancelado.']);
+            return back()->withErrors(['status' => 'This order can no longer be canceled.']);
         }
 
         DB::transaction(function () use ($order) {
@@ -83,6 +83,6 @@ class OrderController extends Controller
             $order->update(['status' => OrderStatus::Canceled]);
         });
 
-        return back()->with('success', 'Pedido cancelado.');
+        return back()->with('success', 'Order canceled.');
     }
 }

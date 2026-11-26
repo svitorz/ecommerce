@@ -15,7 +15,7 @@ class DeleteUser implements DeletesUsers
     {
         if ($user->orders()->exists()) {
             throw ValidationException::withMessages([
-                'password' => 'Não é possível excluir a conta com pedidos registrados.',
+                'password' => 'You cannot delete an account that has orders.',
             ]);
         }
 

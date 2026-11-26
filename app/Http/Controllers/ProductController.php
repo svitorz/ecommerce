@@ -165,7 +165,7 @@ class ProductController extends Controller implements HasMiddleware
     public function destroy(Product $product)
     {
         if ($product->orders()->exists()) {
-            return back()->withErrors(['product' => 'Não é possível excluir produto que já foi pedido.']);
+            return back()->withErrors(['product' => 'You cannot delete a product that has been ordered.']);
         }
 
         $product->delete();

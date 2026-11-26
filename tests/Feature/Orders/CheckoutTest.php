@@ -94,3 +94,10 @@ it('grava o vencimento do cartão no primeiro dia do mês mesmo em dia 31', func
 
     expect(Payment::first()->card_expiration)->toStartWith('2027-02-01');
 });
+
+it('mostra a mensagem de carrinho vazio em inglês', function () {
+    $this->actingAs(customer())
+        ->withSession(['cart' => []])
+        ->post(route('orders.store'), checkoutCardPayload())
+        ->assertSessionHasErrors(['cart' => 'Your cart is empty.']);
+});

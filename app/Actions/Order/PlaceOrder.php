@@ -19,7 +19,7 @@ class PlaceOrder
     public function handle(User $user, array $cartItems, array $payment): Order
     {
         if ($cartItems === []) {
-            throw ValidationException::withMessages(['cart' => 'Seu carrinho está vazio.']);
+            throw ValidationException::withMessages(['cart' => 'Your cart is empty.']);
         }
 
         return DB::transaction(function () use ($user, $cartItems, $payment) {
@@ -39,7 +39,7 @@ class PlaceOrder
 
                 if (! $product || $product->stock < $quantity) {
                     throw ValidationException::withMessages([
-                        'cart' => 'Estoque insuficiente para '.($product->name ?? 'um dos produtos').'.',
+                        'cart' => 'Not enough stock for '.($product->name ?? 'one of the products').'.',
                     ]);
                 }
 

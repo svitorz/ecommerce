@@ -34,7 +34,7 @@ class CartController extends Controller
         $product = Product::findOrFail($validated['product_id']);
 
         if ($validated['quantity'] > $product->stock) {
-            return back()->withErrors(['quantity' => 'Quantidade maior que o estoque disponível.']);
+            return back()->withErrors(['quantity' => 'The quantity is more than the available stock.']);
         }
 
         $this->cart->add($product, $validated['quantity']);
@@ -53,11 +53,11 @@ class CartController extends Controller
 
         // verifica se o item está no carrinho
         if (! $this->cart->has($product)) {
-            return back()->withErrors(['cart' => 'O produto não está no carrinho.']);
+            return back()->withErrors(['cart' => 'This product is not in your cart.']);
         }
 
         if ($validated['quantity'] > $product->stock) {
-            return back()->withErrors(['quantity' => 'Quantidade maior que o estoque disponível.']);
+            return back()->withErrors(['quantity' => 'The quantity is more than the available stock.']);
         }
 
         $this->cart->update($product, $validated['quantity']);
