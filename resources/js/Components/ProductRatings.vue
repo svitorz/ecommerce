@@ -45,8 +45,8 @@ const formatDate = (order_date) => {
                             </p>
                         </div>
 
-                        <!-- Badge de compra verificada (se existir) -->
-                        <div class="inline-flex items-center gap-1">
+                        <!-- Verified purchase badge (only when the author bought the product) -->
+                        <div v-if="rating.verified_purchase" class="inline-flex items-center gap-1">
                             <svg
                                 class="h-5 w-5 text-primary-700 dark:text-primary-500"
                                 aria-hidden="true"
@@ -63,7 +63,7 @@ const formatDate = (order_date) => {
                                 />
                             </svg>
                             <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                Compra verificada
+                                Verified purchase
                             </p>
                         </div>
                     </div>

@@ -112,19 +112,6 @@ const filterData = (filter) => {
                                 </div>
 
                                 <div class="space-y-4 bg-gray-50 p-6 dark:bg-gray-800">
-                                    <div class="space-y-2">
-                                        <dl class="flex items-center justify-between gap-4">
-                                            <dt
-                                                class="font-normal text-gray-500 dark:text-gray-400"
-                                            >
-                                                Original price
-                                            </dt>
-                                            <dd class="font-medium text-gray-900 dark:text-white">
-                                                {{ formatPrice(order.subtotal) }}
-                                            </dd>
-                                        </dl>
-                                    </div>
-
                                     <dl
                                         class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700"
                                     >

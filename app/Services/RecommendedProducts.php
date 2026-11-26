@@ -18,6 +18,7 @@ class RecommendedProducts
             return Product::distinct()
                 ->with('category')
                 ->withFavoriteFlag(auth()->id())
+                ->withRatingSummary()
                 ->limit($limit)
                 ->get()
                 ->each(fn (Product $product) => $cart->decorate($product))
@@ -41,6 +42,7 @@ class RecommendedProducts
             ->whereNotIn('id', array_column($cartItems, 'id')) // Exclui produtos já no carrinho
             ->with('category')
             ->withFavoriteFlag(auth()->id())
+            ->withRatingSummary()
             ->limit($limit) // Limite de 3 produtos, mas pode ser ajustado
             ->get()
             ->each(fn (Product $product) => $cart->decorate($product));

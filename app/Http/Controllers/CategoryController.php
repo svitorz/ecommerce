@@ -40,6 +40,7 @@ class CategoryController extends Controller implements HasMiddleware
             ->with('category')
             ->whereBelongsTo($category)
             ->withFavoriteFlag(auth()->id())
+            ->withRatingSummary()
             ->paginate(8)
             ->through(fn (Product $product) => $cart->decorate($product));
 

@@ -17,7 +17,7 @@ class Product extends Model
         'name', 'description', 'price', 'stock', 'category_id',
     ];
 
-    protected $casts = ['price' => 'float', 'isFavorite' => 'boolean'];
+    protected $casts = ['price' => 'float', 'isFavorite' => 'boolean', 'average_rating' => 'float'];
 
     /**
      * Marca `isFavorite` nos produtos da consulta, em uma única subconsulta.
@@ -27,6 +27,14 @@ class Product extends Model
         $query->withExists([
             'favoritedByUsers as isFavorite' => fn (Builder $q) => $q->where('users.id', $userId),
         ]);
+    }
+
+    /**
+     * Traz a média (`average_rating`) e a contagem (`ratings_count`) das avaliações.
+     */
+    public function scopeWithRatingSummary(Builder $query): void
+    {
+        $query->withAvg('ratings as average_rating', 'rating')->withCount('ratings');
     }
 
     public function category(): BelongsTo

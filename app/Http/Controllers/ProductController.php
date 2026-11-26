@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatus;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Requests\SearchQueryRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Services\Cart;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -34,6 +36,7 @@ class ProductController extends Controller implements HasMiddleware
         $products = Product::query()
             ->with('category')
             ->withFavoriteFlag(auth()->id())
+            ->withRatingSummary()
             ->paginate(8)
             ->through(function (Product $product) use ($cart) {
                 $cart->decorate($product);
@@ -43,6 +46,8 @@ class ProductController extends Controller implements HasMiddleware
                     'name' => $product->name,
                     'price' => $product->price,
                     'stock' => $product->stock,
+                    'average_rating' => $product->average_rating,
+                    'ratings_count' => $product->ratings_count,
                     'category' => $product->category?->only(['id', 'name']),
                     'inCart' => $product->inCart,
                     'quantity' => $product->quantity,
@@ -65,6 +70,7 @@ class ProductController extends Controller implements HasMiddleware
         $products = Product::query()
             ->with('category')
             ->withFavoriteFlag(auth()->id())
+            ->withRatingSummary()
             ->where('products.name', 'LIKE', '%'.$searchKey.'%')
             ->orWhere('products.description', 'LIKE', '%'.$searchKey.'%')
             ->orWhereHas('category', function ($query) use ($searchKey) {
@@ -109,6 +115,18 @@ class ProductController extends Controller implements HasMiddleware
         $product->loadMissing('category', 'ratings.user');
         $product->setAttribute('isFavorite', $product->favoritedByUsers()->where('users.id', auth()->id())->exists());
         $cart->decorate($product);
+
+        // Compra verificada: quem tem pedido não cancelado com este produto.
+        $buyerIds = Order::query()
+            ->whereHas('products', fn ($q) => $q->where('products.id', $product->id))
+            ->where('status', '!=', OrderStatus::Canceled->value)
+            ->pluck('user_id')
+            ->all();
+
+        $product->ratings->each(fn ($rating) => $rating->setAttribute(
+            'verified_purchase',
+            in_array($rating->user_id, $buyerIds, true),
+        ));
 
         return Inertia('Products/ShowProduct',
             [
