@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\isUserAdmin;
+use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
@@ -30,7 +30,7 @@ class CategoryController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware(isUserAdmin::class, except: ['index', 'getProducts']), // impede que usuários não-administradores acesses os formulários.
+            new Middleware(EnsureUserIsAdmin::class, except: ['index', 'getProducts']), // impede que usuários não-administradores acesses os formulários.
         ];
     }
 

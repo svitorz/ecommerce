@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Services\Cart;
+use App\Services\RecommendedProducts;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,7 +15,7 @@ class CartController extends Controller
         $this->cart->initialize();
     }
 
-    public function index(GetRecommendedProductsController $recommendedProducts)
+    public function index(RecommendedProducts $recommendedProducts)
     {
         return Inertia::render('Cart/IndexCart', [
             'products' => $this->cart->items(),

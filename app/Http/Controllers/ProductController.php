@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\isUserAdmin;
+use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Requests\SearchQueryRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -22,7 +22,7 @@ class ProductController extends Controller implements HasMiddleware
     {
         // impede que usuários comuns façam alterações nos produtos.
         return [
-            new Middleware(isUserAdmin::class, except: ['show', 'index']),
+            new Middleware(EnsureUserIsAdmin::class, except: ['show', 'index']),
         ];
     }
 

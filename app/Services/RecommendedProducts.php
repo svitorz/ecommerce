@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-// use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Services\Cart;
 
-class GetRecommendedProductsController extends Controller
+class RecommendedProducts
 {
     /**
      * Retorna produtos com base nas escolhas do usuário.
      */
-    public function handle(Cart $cart, int $limit = 3)
+    public function handle(Cart $cart, int $limit = 3): array
     {
         // Obtenha os produtos no carrinho
         $cartItems = $cart->items();
