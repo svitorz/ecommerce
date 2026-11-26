@@ -22,7 +22,7 @@ class ProductController extends Controller implements HasMiddleware
     {
         // impede que usuários comuns façam alterações nos produtos.
         return [
-            new Middleware(EnsureUserIsAdmin::class, except: ['show', 'index']),
+            new Middleware(EnsureUserIsAdmin::class, except: ['show', 'index', 'searchProduct']),
         ];
     }
 
