@@ -10,6 +10,9 @@ Este diretório contém briefs fechados, um por passo. Quem executa (Haiku) **n�
 | 3 | [fase-3-integridade.md](fase-3-integridade.md) | Banco íntegro: preço decimal, unicidade, chaves estrangeiras e enum de status |
 | 4 | [fase-4-arquitetura.md](fase-4-arquitetura.md) | Produto sem sessão/auth, carrinho como serviço e nomes PSR |
 | 5 | [fase-5-performance.md](fase-5-performance.md) | Busca liberada para cliente, índices nas chaves estrangeiras, carrinho sem consultas repetidas e sessão em Redis |
+| 6 | [fase-6-correcoes-visuais.md](fase-6-correcoes-visuais.md) | Paleta `primary`, layout no celular e no checkout, tema claro, dados na tela e preço formatado |
+
+Interface visual (Fases 6 a 8): diagnóstico, proposta e decisões em [plano-interface.md](plano-interface.md). Os briefs das Fases 7 e 8 vêm depois.
 
 ## Regras para cada passo
 
