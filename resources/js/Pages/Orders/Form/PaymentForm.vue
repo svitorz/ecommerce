@@ -216,36 +216,18 @@ function formatInput(event) {
                         </div>
 
                         <div class="mt-6 flex items-center justify-center gap-8">
-                            <img
-                                class="h-8 w-auto dark:hidden"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/paypal.svg"
-                                alt=""
-                            />
-                            <img
-                                class="hidden h-8 w-auto dark:flex"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/paypal-dark.svg"
-                                alt=""
-                            />
-                            <img
-                                class="h-8 w-auto dark:hidden"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/visa.svg"
-                                alt=""
-                            />
-                            <img
-                                class="hidden h-8 w-auto dark:flex"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/visa-dark.svg"
-                                alt=""
-                            />
-                            <img
-                                class="h-8 w-auto dark:hidden"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/mastercard.svg"
-                                alt=""
-                            />
-                            <img
-                                class="hidden h-8 w-auto dark:flex"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/mastercard-dark.svg"
-                                alt=""
-                            />
+                            <span
+                                class="flex h-8 items-center text-sm font-semibold text-gray-700 dark:text-gray-300"
+                                >PayPal</span
+                            >
+                            <span
+                                class="flex h-8 items-center text-sm font-semibold text-gray-700 dark:text-gray-300"
+                                >Visa</span
+                            >
+                            <span
+                                class="flex h-8 items-center text-sm font-semibold text-gray-700 dark:text-gray-300"
+                                >Mastercard</span
+                            >
                         </div>
                     </div>
                 </div>

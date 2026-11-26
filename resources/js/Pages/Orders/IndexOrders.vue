@@ -62,14 +62,9 @@ const filterData = (filter) => {
                                     <div class="flex items-center gap-6">
                                         <a href="#" class="h-14 w-14 shrink-0">
                                             <img
-                                                class="h-full w-full dark:hidden"
-                                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg"
-                                                alt="imac image"
-                                            />
-                                            <img
-                                                class="hidden h-full w-full dark:block"
-                                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
-                                                alt="imac image"
+                                                :src="product.image_url"
+                                                :alt="product.name"
+                                                class="h-full w-full object-contain"
                                             />
                                         </a>
 

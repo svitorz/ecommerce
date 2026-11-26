@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Services\Cart;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller implements HasMiddleware
 {
@@ -102,7 +103,13 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function store(StoreProductRequest $request)
     {
-        $id = Product::create($request->validated())->id;
+        $data = $request->safe()->except('image');
+
+        if ($request->hasFile('image')) {
+            $data['image_path'] = $request->file('image')->store('products', 'public');
+        }
+
+        $id = Product::create($data)->id;
 
         return to_route('products.show', $id);
     }
@@ -154,7 +161,17 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $product->update($request->validated());
+        $data = $request->safe()->except('image');
+
+        if ($request->hasFile('image')) {
+            if ($product->image_path) {
+                Storage::disk('public')->delete($product->image_path);
+            }
+
+            $data['image_path'] = $request->file('image')->store('products', 'public');
+        }
+
+        $product->update($data);
 
         return to_route('products.show', $product);
     }

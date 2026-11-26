@@ -2,7 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import { router, useForm } from "@inertiajs/vue3";
+import { useForm } from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import ActionMessage from "@/Components/ActionMessage.vue";
 
@@ -19,10 +19,18 @@ const form = useForm({
     price: Number(props.product?.price || 0).toFixed(2),
     stock: Number(props.product?.stock || 0),
     category_id: props.product?.category_id || "",
+    image: null,
 });
 
 function submit() {
-    router.visit(props.route, { method: props.method, data: form });
+    if (props.method === "PUT") {
+        form.transform((data) => ({ ...data, _method: "PUT" })).post(props.route, {
+            forceFormData: true,
+        });
+        return;
+    }
+
+    form.post(props.route, { forceFormData: true });
 }
 </script>
 
@@ -117,6 +125,21 @@ function submit() {
                                     </option>
                                 </select>
                                 <InputError class="mt-2" :message="form.errors.category_id" />
+                            </div>
+                            <div class="w-full py-2">
+                                <label
+                                    for="image"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    >Product image (JPG, PNG or WebP, up to 2 MB)</label
+                                >
+                                <input
+                                    id="image"
+                                    type="file"
+                                    accept="image/jpeg,image/png,image/webp"
+                                    class="mt-1 block w-full text-sm text-gray-700 dark:text-gray-300"
+                                    @change="form.image = $event.target.files[0] ?? null"
+                                />
+                                <InputError class="mt-2" :message="form.errors.image" />
                             </div>
                             <ActionMessage> Saved. </ActionMessage>
                             <PrimaryButton class="my-4 float-end"> Save </PrimaryButton>

@@ -12,14 +12,9 @@ const props = defineProps({
     <div class="h-56 w-full">
         <a href="#">
             <img
-                class="mx-auto h-full dark:hidden"
-                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg"
-                alt=""
-            />
-            <img
-                class="mx-auto hidden h-full dark:block"
-                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
-                alt=""
+                :src="product.image_url"
+                :alt="product.name"
+                class="mx-auto h-full object-contain"
             />
         </a>
     </div>

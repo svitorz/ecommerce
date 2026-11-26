@@ -212,14 +212,9 @@ const calculateRating = () => {
                                 <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
                                     <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
                                         <img
-                                            class="w-full dark:hidden ms-1"
-                                            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg"
-                                            alt=""
-                                        />
-                                        <img
-                                            class="w-full hidden dark:block ms-1"
-                                            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
-                                            alt=""
+                                            :src="localProduct.image_url"
+                                            :alt="localProduct.name"
+                                            class="w-full object-contain ms-1"
                                         />
                                     </div>
 

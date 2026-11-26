@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -14,8 +15,10 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'price', 'stock', 'category_id',
+        'name', 'description', 'price', 'stock', 'category_id', 'image_path',
     ];
+
+    protected $appends = ['image_url'];
 
     protected $casts = ['price' => 'float', 'isFavorite' => 'boolean', 'average_rating' => 'float'];
 
@@ -41,6 +44,16 @@ class Product extends Model
     public function scopeWithRatingSummary(Builder $query): void
     {
         $query->withAvg('ratings as average_rating', 'rating')->withCount('ratings');
+    }
+
+    /**
+     * URL da imagem do produto, ou o placeholder local quando não há imagem.
+     */
+    public function getImageUrlAttribute(): string
+    {
+        return $this->image_path
+            ? Storage::disk('public')->url($this->image_path)
+            : asset('images/product-placeholder.svg');
     }
 
     public function category(): BelongsTo
