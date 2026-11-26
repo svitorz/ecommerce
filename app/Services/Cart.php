@@ -6,6 +6,9 @@ use App\Models\Product;
 
 class Cart
 {
+    /** Itens já calculados nesta instância; evita repetir as consultas dentro da mesma requisição. */
+    private ?array $itemsCache = null;
+
     /**
      * Inicia a chave do carrinho na sessão quando ela ainda não existe.
      */
@@ -13,6 +16,7 @@ class Cart
     {
         if (! session()->has('cart')) {
             session()->put('cart', []);
+            $this->itemsCache = null;
         }
     }
 
@@ -23,6 +27,10 @@ class Cart
      */
     public function items(): array
     {
+        if ($this->itemsCache !== null) {
+            return $this->itemsCache;
+        }
+
         $cart = session()->get('cart', []);
 
         $products = Product::query()
@@ -38,7 +46,7 @@ class Cart
             session()->put('cart', $existing);
         }
 
-        return array_map(function ($item) use ($products) {
+        $this->itemsCache = array_map(function ($item) use ($products) {
             $product = $products->get($item['id']);
 
             return [
@@ -52,10 +60,14 @@ class Cart
                 'category_id' => $product->category_id,
             ];
         }, $existing);
+
+        return $this->itemsCache;
     }
 
     public function add(Product $product, int $quantity): void
     {
+        $this->itemsCache = null;
+
         if ($this->has($product)) {
             return;
         }
@@ -65,6 +77,8 @@ class Cart
 
     public function update(Product $product, int $quantity): void
     {
+        $this->itemsCache = null;
+
         $cart = collect(session()->get('cart', []))
             ->map(fn ($item) => $item['id'] === $product->id ? ['id' => $item['id'], 'quantity' => $quantity] : $item)
             ->values()
@@ -75,6 +89,8 @@ class Cart
 
     public function remove(Product $product): void
     {
+        $this->itemsCache = null;
+
         session()->put('cart', array_values(array_filter(
             session()->get('cart', []),
             fn ($item) => $item['id'] !== $product->id,
@@ -83,6 +99,8 @@ class Cart
 
     public function clear(): void
     {
+        $this->itemsCache = null;
+
         session()->forget('cart');
     }
 
