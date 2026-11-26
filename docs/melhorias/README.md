@@ -9,8 +9,7 @@ Este diretório contém briefs fechados, um por passo. Quem executa (Haiku) **n�
 | 2 | [fase-2-checkout.md](fase-2-checkout.md) | Carrinho robusto e pedido gravado de forma íntegra |
 | 3 | [fase-3-integridade.md](fase-3-integridade.md) | Banco íntegro: preço decimal, unicidade, chaves estrangeiras e enum de status |
 | 4 | [fase-4-arquitetura.md](fase-4-arquitetura.md) | Produto sem sessão/auth, carrinho como serviço e nomes PSR |
-
-Fase 5 (performance) será detalhada depois que 4 estiver concluída.
+| 5 | [fase-5-performance.md](fase-5-performance.md) | Busca liberada para cliente, índices nas chaves estrangeiras, carrinho sem consultas repetidas e sessão em Redis |
 
 ## Regras para cada passo
 
