@@ -12,15 +12,15 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        (new CategoryFactory)->create(['name' => 'Eletrônicos', 'description' => 'Produtos relacionados à tecnologia, como smartphones, laptops, tablets, TVs, acessórios como fones de ouvido, carregadores e dispositivos inteligentes.']);
-        (new CategoryFactory)->create(['name' => 'Roupas e Acessórios', 'description' => 'Vestuário para homens, mulheres e crianças, incluindo camisetas, calças, vestidos, calçados, bolsas, relógios, óculos de sol e outros acessórios de moda.']);
-        (new CategoryFactory)->create(['name' => 'Beleza e Cuidados Pessoais', 'description' => 'Cosméticos, maquiagens, produtos para o cuidado da pele, cabelo e higiene pessoal, como perfumes, hidratantes, shampoos e aparelhos de barbear.']);
-        (new CategoryFactory)->create(['name' => 'Casa e Decoração', 'description' => 'Móveis, artigos de decoração, itens para cozinha, organização, iluminação, roupas de cama, mesa e banho.']);
-        (new CategoryFactory)->create(['name' => 'Esportes e Lazer', 'description' => 'Equipamentos esportivos, roupas fitness, acessórios para práticas ao ar livre (como camping), bicicletas e produtos de bem-estar.']);
-        (new CategoryFactory)->create(['name' => 'Livros, Filmes e Música', 'description' => 'Livros físicos e digitais, DVDs, Blu-rays, vinis, instrumentos musicais e outros materiais relacionados ao entretenimento.']);
-        (new CategoryFactory)->create(['name' => 'Brinquedos e Jogos', 'description' => 'Brinquedos infantis, jogos de tabuleiro, quebra-cabeças, videogames e acessórios para consoles.']);
-        (new CategoryFactory)->create(['name' => 'Alimentos e Bebidas', 'description' => 'Produtos alimentícios, como itens gourmet, snacks, alimentos saudáveis, bebidas alcoólicas e não alcoólicas.']);
-        (new CategoryFactory)->create(['name' => 'Automotivo', 'description' => 'Peças de reposição, acessórios para veículos, como capas de banco, tapetes, produtos para manutenção e limpeza automotiva.']);
-        (new CategoryFactory)->create(['name' => 'Saúde e Bem-estar', 'description' => 'Produtos como suplementos alimentares, vitaminas, itens de primeiros socorros, equipamentos médicos e de fisioterapia.']);
+        (new CategoryFactory)->create(['name' => 'Electronics', 'description' => 'Technology products, such as smartphones, laptops, tablets, TVs, accessories like headphones, chargers and smart devices.']);
+        (new CategoryFactory)->create(['name' => 'Clothing & Accessories', 'description' => 'Clothing for men, women and children, including t-shirts, pants, dresses, shoes, bags, watches, sunglasses and other fashion accessories.']);
+        (new CategoryFactory)->create(['name' => 'Beauty & Personal Care', 'description' => 'Cosmetics, makeup, skin, hair and personal hygiene products, such as perfumes, moisturizers, shampoos and razors.']);
+        (new CategoryFactory)->create(['name' => 'Home & Decor', 'description' => 'Furniture, decorative items, kitchen supplies, organization, lighting, bed, table and bath linens.']);
+        (new CategoryFactory)->create(['name' => 'Sports & Leisure', 'description' => 'Sports equipment, fitness clothing, outdoor accessories such as camping gear, bicycles and wellness products.']);
+        (new CategoryFactory)->create(['name' => 'Books, Movies & Music', 'description' => 'Physical and digital books, DVDs, Blu-rays, vinyl records, musical instruments and other entertainment materials.']);
+        (new CategoryFactory)->create(['name' => 'Toys & Games', 'description' => 'Children\'s toys, board games, puzzles, video games and console accessories.']);
+        (new CategoryFactory)->create(['name' => 'Food & Beverages', 'description' => 'Food products, such as gourmet items, snacks, healthy food, alcoholic and non-alcoholic beverages.']);
+        (new CategoryFactory)->create(['name' => 'Automotive', 'description' => 'Spare parts and vehicle accessories, such as seat covers, floor mats, maintenance products and car cleaning supplies.']);
+        (new CategoryFactory)->create(['name' => 'Health & Wellness', 'description' => 'Products such as dietary supplements, vitamins, first aid items, medical and physiotherapy equipment.']);
     }
 }

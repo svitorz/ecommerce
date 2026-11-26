@@ -19,3 +19,11 @@ it('factories funcionam em banco vazio', function () {
     expect(Product::factory()->create()->category)->not->toBeNull()
         ->and(Order::factory()->create()->user_id)->not->toBeNull();
 });
+
+it('popula categorias em inglês e nomes de produto de catálogo', function () {
+    $this->seed();
+
+    expect(Category::where('name', 'Electronics')->exists())->toBeTrue()
+        ->and(Product::where('name', 'like', 'Prof.%')->exists())->toBeFalse()
+        ->and(Product::where('name', 'like', '%Jr.%')->exists())->toBeFalse();
+});
