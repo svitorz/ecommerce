@@ -11,8 +11,9 @@ Este diretório contém briefs fechados, um por passo. Quem executa (Haiku) **n�
 | 4 | [fase-4-arquitetura.md](fase-4-arquitetura.md) | Produto sem sessão/auth, carrinho como serviço e nomes PSR |
 | 5 | [fase-5-performance.md](fase-5-performance.md) | Busca liberada para cliente, índices nas chaves estrangeiras, carrinho sem consultas repetidas e sessão em Redis |
 | 6 | [fase-6-correcoes-visuais.md](fase-6-correcoes-visuais.md) | Paleta `primary`, layout no celular e no checkout, tema claro, dados na tela e preço formatado |
+| 7 | [fase-7-conteudo.md](fase-7-conteudo.md) | Dados verdadeiros nos cartões, idioma único em inglês, vitrine pública, imagem por produto e seeder plausível |
 
-Interface visual (Fases 6 a 8): diagnóstico, proposta e decisões em [plano-interface.md](plano-interface.md). Os briefs das Fases 7 e 8 vêm depois.
+Interface visual (Fases 6 a 8): diagnóstico, proposta e decisões em [plano-interface.md](plano-interface.md). O brief da Fase 8 vem depois.
 
 ## Regras para cada passo
 
@@ -40,4 +41,4 @@ Interface visual (Fases 6 a 8): diagnóstico, proposta e decisões em [plano-int
 - PHP: seguir o preset `laravel` do Pint. Tipos de retorno declarados em métodos novos.
 - Testes: Pest, em `tests/Feature/<Area>/<Nome>Test.php`. Use os helpers `admin()` e `customer()` de `tests/Pest.php` (criados no passo 0.3).
 - Respostas de rotas chamadas pelo Inertia (`router.visit`, `form.post`) **sempre** retornam `back()`, `to_route(...)` ou `Inertia::render(...)` — nunca `void`.
-- Mensagens novas para o usuário: em português.
+- Mensagens novas para o usuário e textos novos de interface: **em inglês** (desde a Fase 7). Briefs, commits e comentários de código continuam em português.
