@@ -37,6 +37,7 @@ class CategoryController extends Controller implements HasMiddleware
     public function getProducts(Category $category, Cart $cart)
     {
         $products = Product::query()
+            ->with('category')
             ->whereBelongsTo($category)
             ->withFavoriteFlag(auth()->id())
             ->paginate(8)

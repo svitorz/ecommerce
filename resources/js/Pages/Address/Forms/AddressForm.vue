@@ -78,7 +78,7 @@ const saveAddress = () => {
                     required
                     autocomplete="address-level1"
                 />
-                <InputError :message="form.errors.country" class="mt-2" />
+                <InputError :message="form.errors.state" class="mt-2" />
             </div>
             <!-- city -->
             <div class="col-span-6 sm:col-span-4">
@@ -91,7 +91,7 @@ const saveAddress = () => {
                     required
                     autocomplete="address-level2"
                 />
-                <InputError :message="form.errors.country" class="mt-2" />
+                <InputError :message="form.errors.city" class="mt-2" />
             </div>
             <!-- street -->
             <div class="col-span-6 sm:col-span-4">
@@ -104,7 +104,7 @@ const saveAddress = () => {
                     required
                     autocomplete="address-line1"
                 />
-                <InputError :message="form.errors.country" class="mt-2" />
+                <InputError :message="form.errors.street" class="mt-2" />
             </div>
             <!-- number -->
             <div class="col-span-6 sm:col-span-4">

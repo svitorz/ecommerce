@@ -84,7 +84,6 @@ const handleMouseLeave = () => {
 // Função chamada ao clicar no botão
 const setRating = (rating) => {
     ratingForm.rating = rating;
-    console.log(ratingForm.rating);
 };
 
 const submitRating = () => {
@@ -102,7 +101,7 @@ const submitRating = () => {
         );
     } catch (error) {
         toastRef.value.showToast("Unexpected error", "error");
-        console.log(error);
+        console.error(error);
     }
 };
 

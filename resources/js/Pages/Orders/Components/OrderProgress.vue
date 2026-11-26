@@ -90,7 +90,7 @@ const cancelOrder = async (id) => {
         });
     } catch (error) {
         toastRef.value.showToast("Unexpected error", "error");
-        console.log(error);
+        console.error(error);
     }
 };
 </script>

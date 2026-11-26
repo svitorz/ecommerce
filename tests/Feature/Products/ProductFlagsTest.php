@@ -50,3 +50,21 @@ it('não expõe quantity nem isFavorite no model fora de uma consulta com escopo
     expect($product->toArray())->not->toHaveKey('quantity');
     expect($product->toArray())->not->toHaveKey('isFavorite');
 });
+
+it('envia o nome da categoria em cada produto da listagem', function () {
+    $category = Category::factory()->create(['name' => 'Livros']);
+    Product::factory()->for($category)->create();
+
+    $this->actingAs(customer())
+        ->get(route('products.index'))
+        ->assertInertia(fn ($page) => $page->where('products.data.0.category.name', 'Livros'));
+});
+
+it('envia o nome da categoria nos produtos de uma categoria', function () {
+    $category = Category::factory()->create(['name' => 'Livros']);
+    Product::factory()->for($category)->create();
+
+    $this->actingAs(customer())
+        ->get(route('categories.products', $category))
+        ->assertInertia(fn ($page) => $page->where('products.data.0.category.name', 'Livros'));
+});

@@ -15,12 +15,10 @@ const props = defineProps({
     recommended_products: Array,
     is_admin: Boolean,
 });
-// console.log("recommended products:",props.recommended_products);
-// console.log("is array?", Array.isArray(props.recommended_products));
 </script>
 
 <template>
-    <AppLayout>
+    <AppLayout title="Cart">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 Shopping Cart

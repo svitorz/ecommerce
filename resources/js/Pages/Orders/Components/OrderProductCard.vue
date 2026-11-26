@@ -38,7 +38,7 @@ const updateQuantity = async (product, quantity) => {
         });
     } catch (error) {
         toastRef.value.showToast("Unexpected error", "error");
-        console.log(error);
+        console.error(error);
         loading.value = false;
     }
 };
@@ -76,7 +76,7 @@ const removeFromCart = async (product) => {
         });
     } catch (error) {
         toastRef.value.showToast("Unexpected error", "error");
-        console.log(error);
+        console.error(error);
         loading.value = false;
     }
 };

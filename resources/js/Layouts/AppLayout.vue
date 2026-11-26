@@ -526,7 +526,8 @@ const logout = () => {
 
             <footer class="small py-5 dark:border-zinc-700 border-t-2 text-center dark:text-white">
                 Developed by
-                <a href="github.com/svitorz" class="text-blue-600 hover:text-blue-900"> svitorz </a
+                <a href="https://github.com/svitorz" class="text-blue-600 hover:text-blue-900">
+                    svitorz </a
                 >.
                 <br />
                 <a

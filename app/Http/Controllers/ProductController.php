@@ -43,6 +43,7 @@ class ProductController extends Controller implements HasMiddleware
                     'name' => $product->name,
                     'price' => $product->price,
                     'stock' => $product->stock,
+                    'category' => $product->category?->only(['id', 'name']),
                     'inCart' => $product->inCart,
                     'quantity' => $product->quantity,
                     'isFavorite' => $product->isFavorite,

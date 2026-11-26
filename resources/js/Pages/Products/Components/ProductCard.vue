@@ -26,7 +26,7 @@ const props = defineProps({
             <span
                 class="me-2 dark:text-white rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-300"
             >
-                {{ product?.categories?.name }}
+                {{ product?.category?.name }}
             </span>
 
             <div class="flex items-center justify-end gap-1">
@@ -146,7 +146,7 @@ const props = defineProps({
         <ul class="mt-2 flex items-center gap-4">
             <li class="flex items-center gap-2">
                 <svg
-                    v-if="!product?.category?.name"
+                    v-if="!product?.categories?.name"
                     class="h-4 w-4 text-gray-500 dark:text-gray-400"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +154,7 @@ const props = defineProps({
                     viewBox="0 0 24 24"
                 >
                     <path
-                        v-if="!product?.category?.name"
+                        v-if="!product?.categories?.name"
                         stroke="currentColor"
                         stroke-linecap="round"
                         stroke-linejoin="round"
@@ -163,7 +163,7 @@ const props = defineProps({
                     />
                 </svg>
                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                    {{ product?.category?.name ?? "Fast Delivery" }}
+                    {{ product?.categories?.name ?? "Fast Delivery" }}
                 </p>
             </li>
 

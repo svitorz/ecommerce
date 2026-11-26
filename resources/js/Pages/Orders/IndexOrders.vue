@@ -19,11 +19,10 @@ const filterData = (filter) => {
         localOrders.value = originalData.value.filter((order) => order.status === filter);
     }
 };
-console.log(props.orders);
 </script>
 
 <template>
-    <AppLayout>
+    <AppLayout title="Orders">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 See your last order

@@ -33,7 +33,7 @@ const addToFavorites = async () => {
         );
     } catch (error) {
         toastRef.value.showToast("Unexpected error", "error");
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -50,17 +50,15 @@ const removeFromFavorites = async () => {
                 onSuccess: () => {
                     toastRef.value.showToast("Product removed from favorites!", "warning");
                     localProduct.value.isFavorite = false;
-                    console.log("Success");
                 },
                 onError: () => {
                     toastRef.value.showToast("Error removing product from favorites.", "error");
-                    console.log("Error");
                 },
             },
         );
     } catch (error) {
         toastRef.value.showToast("Unexpected error", "error");
-        console.log(error);
+        console.error(error);
     }
 };
 </script>

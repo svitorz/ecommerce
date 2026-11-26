@@ -47,7 +47,7 @@ const addToCart = async () => {
         });
     } catch (error) {
         toastRef.value.showToast("Unexpected error", "error");
-        console.log(error);
+        console.error(error);
         loading.value = false;
     }
 };
@@ -73,7 +73,7 @@ const removeFromCart = async (localProduct) => {
         });
     } catch (error) {
         toastRef.value.showToast("Unexpected error", "error");
-        console.log(error);
+        console.error(error);
         loading.value = false;
     }
 };
@@ -95,7 +95,7 @@ const handleCartAction = async () => {
         }
     } catch (error) {
         toastRef.value.showToast("Unexpected error", "error");
-        console.log(error);
+        console.error(error);
     }
 };
 </script>
