@@ -49,6 +49,7 @@ class ProductController extends Controller implements HasMiddleware
                     'stock' => $product->stock,
                     'average_rating' => $product->average_rating,
                     'ratings_count' => $product->ratings_count,
+                    'image_url' => $product->image_url,
                     'category' => $product->category?->only(['id', 'name']),
                     'inCart' => $product->inCart,
                     'quantity' => $product->quantity,

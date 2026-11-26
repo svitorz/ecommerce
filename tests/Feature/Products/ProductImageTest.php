@@ -71,3 +71,11 @@ it('monta a URL da imagem quando o produto tem imagem', function () {
 
     expect($product->image_url)->toContain('products/lamp.jpg');
 });
+
+it('envia a URL da imagem em cada produto da listagem', function () {
+    Product::factory()->create(['image_path' => null]);
+
+    $this->actingAs(customer())
+        ->get(route('products.index'))
+        ->assertInertia(fn ($page) => $page->where('products.data.0.image_url', asset('images/product-placeholder.svg')));
+});
