@@ -7,8 +7,10 @@ Este diretório contém briefs fechados, um por passo. Quem executa (Haiku) **n�
 | 0 | [fase-0-fundacao.md](fase-0-fundacao.md) | Testes rodando, lint, CI, seeds e factories confiáveis |
 | 1 | [fase-1-seguranca.md](fase-1-seguranca.md) | Autorização correta e fim do armazenamento de cartão |
 | 2 | [fase-2-checkout.md](fase-2-checkout.md) | Carrinho robusto e pedido gravado de forma íntegra |
+| 3 | [fase-3-integridade.md](fase-3-integridade.md) | Banco íntegro: preço decimal, unicidade, chaves estrangeiras e enum de status |
+| 4 | [fase-4-arquitetura.md](fase-4-arquitetura.md) | Produto sem sessão/auth, carrinho como serviço e nomes PSR |
 
-Fases 3–5 (banco, arquitetura, performance) serão detalhadas depois que 0–2 estiverem concluídas.
+Fase 5 (performance) será detalhada depois que 4 estiver concluída.
 
 ## Regras para cada passo
 
