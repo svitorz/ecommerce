@@ -1,4 +1,5 @@
 <script setup>
+import { formatPrice } from "@/Utils/formatPrice";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { Link } from "@inertiajs/vue3";
 const props = defineProps({ subtotal: Number });
@@ -17,7 +18,7 @@ const props = defineProps({ subtotal: Number });
                             Original price
                         </dt>
                         <dd class="text-base font-medium text-gray-900 dark:text-white">
-                            $ {{ subtotal }}
+                            {{ formatPrice(subtotal) }}
                         </dd>
                     </dl>
                 </div>
@@ -26,7 +27,7 @@ const props = defineProps({ subtotal: Number });
                 >
                     <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
                     <dd class="text-base font-bold text-gray-900 dark:text-white">
-                        $ {{ subtotal }}
+                        {{ formatPrice(subtotal) }}
                     </dd>
                 </dl>
             </div>

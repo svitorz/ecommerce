@@ -1,4 +1,5 @@
 <script setup>
+import { formatPrice } from "@/Utils/formatPrice";
 import CartButton from "@/Pages/Cart/Components/CartButton.vue";
 import FavoriteButton from "@/Pages/Favorites/FavoriteButton.vue";
 import { Link } from "@inertiajs/vue3";
@@ -188,7 +189,7 @@ const props = defineProps({
 
         <div class="mt-4 flex items-center justify-between gap-4">
             <p class="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">
-                {{ product.price }}
+                {{ formatPrice(product.price) }}
             </p>
             <!--  -->
             <CartButton :product="product" />

@@ -1,4 +1,5 @@
 <script setup>
+import { formatPrice } from "@/Utils/formatPrice";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { useForm } from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
@@ -210,7 +211,7 @@ function formatInput(event) {
                                         Original price
                                     </dt>
                                     <dd class="text-base font-medium text-gray-900 dark:text-white">
-                                        $ {{ amount }}
+                                        {{ formatPrice(amount) }}
                                     </dd>
                                 </dl>
                             </div>
@@ -222,7 +223,7 @@ function formatInput(event) {
                                     Total
                                 </dt>
                                 <dd class="text-base font-bold text-gray-900 dark:text-white">
-                                    $ {{ amount }}
+                                    {{ formatPrice(amount) }}
                                 </dd>
                             </dl>
                         </div>

@@ -1,4 +1,5 @@
 <script setup>
+import { formatPrice } from "@/Utils/formatPrice";
 import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
 import { Link } from "@inertiajs/vue3";
@@ -157,7 +158,7 @@ const removeFromCart = async (product) => {
             </div>
             <div class="text-end md:order-4 md:w-32">
                 <p class="text-base font-bold text-gray-900 dark:text-white">
-                    ${{ product.price }}
+                    {{ formatPrice(product.price) }}
                 </p>
             </div>
         </div>

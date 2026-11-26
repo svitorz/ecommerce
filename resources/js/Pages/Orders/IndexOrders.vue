@@ -1,4 +1,5 @@
 <script setup>
+import { formatPrice } from "@/Utils/formatPrice";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link } from "@inertiajs/vue3";
 import OrderProgress from "./Components/OrderProgress.vue";
@@ -100,7 +101,11 @@ const filterData = (filter) => {
                                             <p
                                                 class="text-xl font-bold leading-tight text-gray-900 dark:text-white"
                                             >
-                                                ${{ product.price }}
+                                                {{
+                                                    formatPrice(
+                                                        product.pivot?.unit_price ?? product.price,
+                                                    )
+                                                }}
                                             </p>
                                         </div>
                                     </div>
@@ -115,7 +120,7 @@ const filterData = (filter) => {
                                                 Original price
                                             </dt>
                                             <dd class="font-medium text-gray-900 dark:text-white">
-                                                ${{ order.subtotal }}
+                                                {{ formatPrice(order.subtotal) }}
                                             </dd>
                                         </dl>
                                     </div>
@@ -127,7 +132,7 @@ const filterData = (filter) => {
                                             Total
                                         </dt>
                                         <dd class="text-lg font-bold text-gray-900 dark:text-white">
-                                            ${{ order.subtotal }}
+                                            {{ formatPrice(order.subtotal) }}
                                         </dd>
                                     </dl>
                                 </div>

@@ -1,4 +1,5 @@
 <script setup>
+import { formatPrice } from "@/Utils/formatPrice";
 import { defineProps, ref, reactive, watch } from "vue";
 import { useForm } from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
@@ -233,7 +234,7 @@ const calculateRating = () => {
                                             <p
                                                 class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
                                             >
-                                                ${{ localProduct.price }}
+                                                {{ formatPrice(localProduct.price) }}
                                             </p>
 
                                             <div class="flex items-center gap-2 mt-2 sm:mt-0">
