@@ -79,6 +79,7 @@ trait CartTrait
         $cart = session()->get('cart', []);
 
         $products = Product::with('category')
+            ->withFavoriteFlag(auth()->id())
             ->whereIn('id', collect($cart)->pluck('id'))
             ->get()
             ->keyBy('id');
@@ -129,5 +130,18 @@ trait CartTrait
         }
 
         return null;
+    }
+
+    /**
+     * Anexa `quantity` e `inCart` ao produto para o frontend.
+     */
+    public function decorateWithCart(Product $product): Product
+    {
+        $cartProduct = $this->getCartProduct($product);
+
+        $product->setAttribute('quantity', $cartProduct['quantity'] ?? 1);
+        $product->setAttribute('inCart', $this->isInCart($product));
+
+        return $product;
     }
 }

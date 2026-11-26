@@ -17,7 +17,13 @@ class GetRecommendedProductsController extends Controller
         $cartItems = $cartController->getCartItems();
 
         if (empty($cartItems)) {
-            return Product::distinct()->with('category')->limit($limit)->get()->toArray();
+            return Product::distinct()
+                ->with('category')
+                ->withFavoriteFlag(auth()->id())
+                ->limit($limit)
+                ->get()
+                ->each(fn (Product $product) => $cartController->decorateWithCart($product))
+                ->toArray();
         }
 
         // Inicializa um array para armazenar as categorias dos produtos no carrinho
@@ -36,8 +42,10 @@ class GetRecommendedProductsController extends Controller
         $recommendedProducts = Product::whereIn('category_id', $categories)
             ->whereNotIn('id', array_column($cartItems, 'id')) // Exclui produtos já no carrinho
             ->with('category')
+            ->withFavoriteFlag(auth()->id())
             ->limit($limit) // Limite de 3 produtos, mas pode ser ajustado
-            ->get();
+            ->get()
+            ->each(fn (Product $product) => $cartController->decorateWithCart($product));
 
         return $recommendedProducts->toArray();
     }

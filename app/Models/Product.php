@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,30 +17,16 @@ class Product extends Model
         'name', 'description', 'price', 'stock', 'category_id',
     ];
 
-    protected $casts = ['price' => 'float'];
+    protected $casts = ['price' => 'float', 'isFavorite' => 'boolean'];
 
-    protected $appends = ['quantity', 'isFavorite'];
-
-    protected function getIsFavoriteAttribute(): bool
+    /**
+     * Marca `isFavorite` nos produtos da consulta, em uma única subconsulta.
+     */
+    public function scopeWithFavoriteFlag(Builder $query, int $userId): void
     {
-        return auth()->user()
-            ? $this->favoritedByUsers()->where('user_id', auth()->id())->exists()
-            : false;
-    }
-
-    protected function setIsFavoriteattribute($value)
-    {
-        $this->attributes['isFavorite'] = $value;
-    }
-
-    protected function getQuantityAttribute(): int
-    {
-        return $this->attributes['quantity'] ?? 1;
-    }
-
-    protected function setquantityattribute($value)
-    {
-        $this->attributes['quantity'] = $value;
+        $query->withExists([
+            'favoritedByUsers as isFavorite' => fn (Builder $q) => $q->where('users.id', $userId),
+        ]);
     }
 
     public function category(): BelongsTo

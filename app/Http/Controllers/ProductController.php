@@ -16,13 +16,6 @@ class ProductController extends Controller implements HasMiddleware
 {
     use CartTrait;
 
-    public Product $product;
-
-    public function __construct(Product $product)
-    {
-        $this->product = $product;
-    }
-
     /**
      * @return array
      *               Insert middleware at this functions.
@@ -40,19 +33,23 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $products = $this->product->load('category')->paginate(8)->through(function ($product) {
-            $cartProduct = $this->getCartProduct($product);
+        $products = Product::query()
+            ->with('category')
+            ->withFavoriteFlag(auth()->id())
+            ->paginate(8)
+            ->through(function (Product $product) {
+                $cartProduct = $this->getCartProduct($product);
 
-            return [
-                'id' => $product->id,
-                'name' => $product->name,
-                'price' => $product->price,
-                'stock' => $product->stock,
-                'inCart' => $this->isInCart($product),
-                'quantity' => $cartProduct['quantity'] ?? 1,
-                'isFavorite' => $product->favoritedByUsers()->where('user_id', auth()->user()->id)->exists(),
-            ];
-        });
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'inCart' => $this->isInCart($product),
+                    'quantity' => $cartProduct['quantity'] ?? 1,
+                    'isFavorite' => $product->isFavorite,
+                ];
+            });
 
         return Inertia('Products/IndexProducts', [
             'products' => $products,
@@ -66,13 +63,16 @@ class ProductController extends Controller implements HasMiddleware
     public function searchProduct(SearchQueryRequest $searchKey)
     {
         $searchKey = $searchKey->searchKey;
-        $products = $this->product->load('category')
+        $products = Product::query()
+            ->with('category')
+            ->withFavoriteFlag(auth()->id())
             ->where('products.name', 'LIKE', '%'.$searchKey.'%')
             ->orWhere('products.description', 'LIKE', '%'.$searchKey.'%')
             ->orWhereHas('category', function ($query) use ($searchKey) {
                 $query->where('name', 'LIKE', '%'.$searchKey.'%');
             })
-            ->get();
+            ->get()
+            ->each(fn (Product $product) => $this->decorateWithCart($product));
 
         return Inertia('Products/IndexProducts', [
             'isAdmin' => request()->user()->isAdmin(),
@@ -97,7 +97,7 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function store(StoreProductRequest $request)
     {
-        $id = $this->product->create($request->validated())->id;
+        $id = Product::create($request->validated())->id;
 
         return to_route('products.show', $id);
     }
@@ -107,7 +107,9 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function show(Product $product)
     {
-        $product->load('category', 'ratings.user');
+        $product->loadMissing('category', 'ratings.user');
+        $product->setAttribute('isFavorite', $product->favoritedByUsers()->where('users.id', auth()->id())->exists());
+        $this->decorateWithCart($product);
 
         return Inertia('Products/ShowProduct',
             [
