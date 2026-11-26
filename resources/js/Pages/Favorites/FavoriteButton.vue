@@ -1,7 +1,9 @@
 <script setup>
-import { router } from "@inertiajs/vue3";
+import { router, usePage, Link } from "@inertiajs/vue3";
 import ToastManager from "@/Components/ToastManager.vue";
 import { ref } from "vue";
+
+const isGuest = !usePage().props.auth.user;
 const toastRef = ref(null);
 const props = defineProps({
     product: {
@@ -63,7 +65,7 @@ const removeFromFavorites = async () => {
 };
 </script>
 <template>
-    <div v-if="localProduct">
+    <div v-if="localProduct && !isGuest">
         <div v-if="!localProduct.isFavorite">
             <button
                 @click="addToFavorites()"
@@ -128,5 +130,12 @@ const removeFromFavorites = async () => {
             </div>
         </div>
     </div>
+    <Link
+        v-if="isGuest"
+        :href="route('login')"
+        class="inline-flex items-center text-sm font-medium text-gray-500 underline hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+    >
+        Log in to save
+    </Link>
     <ToastManager ref="toastRef" />
 </template>

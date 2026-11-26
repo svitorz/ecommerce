@@ -16,11 +16,11 @@ it('permite cliente comum buscar produtos', function () {
         ->assertInertia(fn ($page) => $page->component('Products/IndexProducts'));
 });
 
-it('redireciona visitante sem login ao buscar', function () {
+it('permite visitante buscar produtos sem login', function () {
     $req = searchRequest('camiseta');
 
     $this->call('GET', $req['url'], $req['parameters'])
-        ->assertRedirect();
+        ->assertOk();
 });
 
 it('permite admin buscar produtos', function () {

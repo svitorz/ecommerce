@@ -57,7 +57,7 @@ class ProductController extends Controller implements HasMiddleware
 
         return Inertia('Products/IndexProducts', [
             'products' => $products,
-            'isAdmin' => request()->user()->isAdmin(),
+            'isAdmin' => request()->user()?->isAdmin() ?? false,
         ]);
     }
 
@@ -80,7 +80,7 @@ class ProductController extends Controller implements HasMiddleware
             ->each(fn (Product $product) => $cart->decorate($product));
 
         return Inertia('Products/IndexProducts', [
-            'isAdmin' => request()->user()->isAdmin(),
+            'isAdmin' => request()->user()?->isAdmin() ?? false,
             'products' => $products,
         ]);
     }
@@ -131,7 +131,7 @@ class ProductController extends Controller implements HasMiddleware
         return Inertia('Products/ShowProduct',
             [
                 'product' => $product,
-                'isAdmin' => request()->user()->isAdmin(),
+                'isAdmin' => request()->user()?->isAdmin() ?? false,
             ]);
     }
 
@@ -141,7 +141,7 @@ class ProductController extends Controller implements HasMiddleware
     public function edit(Product $product)
     {
         return Inertia('Products/Forms/ProductForm', [
-            'isAdmin' => request()->user()->isAdmin(),
+            'isAdmin' => request()->user()?->isAdmin() ?? false,
             'product' => $product,
             'categories' => Category::distinct()->get(),
             'route' => route('products.update', $product->id),

@@ -1,7 +1,9 @@
 <script setup>
 import { reactive, ref, computed } from "vue";
-import { router } from "@inertiajs/vue3";
+import { router, usePage, Link } from "@inertiajs/vue3";
 import ToastManager from "@/Components/ToastManager.vue";
+
+const isGuest = !usePage().props.auth.user;
 
 const loading = ref(false);
 const toastRef = ref(null);
@@ -100,7 +102,7 @@ const handleCartAction = async () => {
 };
 </script>
 <template>
-    <form @submit.prevent="handleCartAction">
+    <form v-if="!isGuest" @submit.prevent="handleCartAction">
         <button
             :disabled="loading"
             type="submit"
@@ -127,5 +129,12 @@ const handleCartAction = async () => {
             {{ buttonText }}
         </button>
     </form>
+    <Link
+        v-else
+        :href="route('login')"
+        class="inline-flex items-center rounded-lg bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
+    >
+        Log in to buy
+    </Link>
     <ToastManager ref="toastRef" />
 </template>

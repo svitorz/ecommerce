@@ -53,6 +53,7 @@ const logout = () => {
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
+                                    v-if="$page.props.auth.user"
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
@@ -108,7 +109,10 @@ const logout = () => {
                                 </NavLink>
                                 <!-- Teams Dropdown -->
                                 <Dropdown
-                                    v-if="$page.props.jetstream.hasTeamFeatures"
+                                    v-if="
+                                        $page.props.jetstream.hasTeamFeatures &&
+                                        $page.props.auth.user
+                                    "
                                     align="right"
                                     width="60"
                                 >
@@ -216,8 +220,25 @@ const logout = () => {
                                 </Dropdown>
                             </div>
 
+                            <!-- Guest links -->
+                            <div
+                                v-if="!$page.props.auth.user"
+                                class="ms-3 inline-flex items-center gap-4"
+                            >
+                                <a
+                                    :href="route('login')"
+                                    class="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                                    >Log in</a
+                                >
+                                <a
+                                    :href="route('register')"
+                                    class="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                                    >Register</a
+                                >
+                            </div>
+
                             <!-- Settings Dropdown -->
-                            <div class="ms-3 inline-flex">
+                            <div v-if="$page.props.auth.user" class="ms-3 inline-flex">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <button
@@ -393,6 +414,7 @@ const logout = () => {
                         </ResponsiveNavLink>
                         <!-- start dashboard -->
                         <ResponsiveNavLink
+                            v-if="$page.props.auth.user"
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
                         >
@@ -400,8 +422,20 @@ const logout = () => {
                         </ResponsiveNavLink>
                     </div>
 
+                    <!-- Guest links (responsive) -->
+                    <div
+                        v-if="!$page.props.auth.user"
+                        class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600 space-y-1"
+                    >
+                        <ResponsiveNavLink :href="route('login')">Log in</ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('register')">Register</ResponsiveNavLink>
+                    </div>
+
                     <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+                    <div
+                        v-if="$page.props.auth.user"
+                        class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600"
+                    >
                         <div class="flex items-center px-4">
                             <div
                                 v-if="$page.props.jetstream.managesProfilePhotos"

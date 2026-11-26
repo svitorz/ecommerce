@@ -238,7 +238,11 @@ const calculateRating = () => {
                                             </p>
 
                                             <div class="flex items-center gap-2 mt-2 sm:mt-0">
-                                                <button class="flex" @click="openRatingModal()">
+                                                <button
+                                                    v-if="$page.props.auth.user"
+                                                    class="flex"
+                                                    @click="openRatingModal()"
+                                                >
                                                     <div class="flex items-center gap-1">
                                                         <StarRating :rating="calculateRating()" />
                                                     </div>

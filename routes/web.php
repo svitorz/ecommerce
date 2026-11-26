@@ -5,32 +5,26 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavoriteProductsController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductRatingController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// vitrine pública: visitantes navegam e buscam sem login.
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/{category}/products', [CategoryController::class, 'getProducts'])->name('categories.products');
+Route::get('/search/{searchKey}', [ProductController::class, 'searchProduct'])->name('search');
+// só id numérico: impede que /products/create seja lido como produto.
+Route::resource('products', ProductController::class)->only(['index', 'show'])->where(['product' => '[0-9]+']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    // busca específica de categorias.
-    Route::get('/categories/{category}/products', [CategoryController::class, 'getProducts'])->name('categories.products');
 
-    // buscas
-    Route::get('/search/{searchKey}', [ProductController::class, 'searchProduct'])->name('search');
+    Route::resource('categories', CategoryController::class)->except(['index', 'show']);
 
-    Route::resource('categories', CategoryController::class)->except(['show']);
-
-    Route::resource('products', ProductController::class);
+    Route::resource('products', ProductController::class)->except(['index', 'show']);
 
     Route::resource('orders', OrderController::class)->only(['index', 'create', 'store', 'update']);
 

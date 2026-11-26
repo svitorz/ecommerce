@@ -22,8 +22,14 @@ class Product extends Model
     /**
      * Marca `isFavorite` nos produtos da consulta, em uma única subconsulta.
      */
-    public function scopeWithFavoriteFlag(Builder $query, int $userId): void
+    public function scopeWithFavoriteFlag(Builder $query, ?int $userId): void
     {
+        if ($userId === null) {
+            $query->selectRaw('products.*, false as "isFavorite"');
+
+            return;
+        }
+
         $query->withExists([
             'favoritedByUsers as isFavorite' => fn (Builder $q) => $q->where('users.id', $userId),
         ]);
