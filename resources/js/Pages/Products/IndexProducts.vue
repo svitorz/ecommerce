@@ -34,7 +34,9 @@ const handleSortedProducts = (value) => {
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <SortDropdown :products="products" @sortedProducts="handleSortedProducts" />
+                <div class="mb-4 flex justify-end px-4 sm:px-0">
+                    <SortDropdown :products="products" @sortedProducts="handleSortedProducts" />
+                </div>
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                     <div v-if="products.length > 0">
                         <div

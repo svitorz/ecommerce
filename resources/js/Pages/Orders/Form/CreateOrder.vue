@@ -13,25 +13,33 @@ const props = defineProps({
 </script>
 
 <template>
-    <AppLayout>
+    <AppLayout title="Checkout">
         <template #header>
-            <h2 class="text-white">Confirm your order.</h2>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                Confirm your order.
+            </h2>
         </template>
-        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-            <div
-                class="bg-blue-600 h-2.5 rounded-full"
-                :style="step === 1 ? 'width: 50%;' : 'width: 90%;'"
-            ></div>
-            <div class="p-5 block" v-if="step === 1">
-                <AddressForm :show="false" :address="$page.props.auth.user.address" />
-            </div>
-            <div class="p-5 block" v-if="step === 2">
-                <PaymentForm :amount="amount" />
-            </div>
-            <div class="float-end p-5">
-                <SecondaryButton @click="step--" v-if="step > 1"> Go back </SecondaryButton>
 
-                <PrimaryButton v-if="step == 1" @click="step++"> Next </PrimaryButton>
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-6 h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
+                    <div
+                        class="h-2.5 rounded-full bg-primary-600"
+                        :style="{ width: step === 1 ? '50%' : '90%' }"
+                    ></div>
+                </div>
+
+                <div v-if="step === 1">
+                    <AddressForm :show="false" :address="$page.props.auth.user.address" />
+                </div>
+                <div v-if="step === 2">
+                    <PaymentForm :amount="amount" />
+                </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <SecondaryButton v-if="step > 1" @click="step--"> Go back </SecondaryButton>
+                    <PrimaryButton v-if="step === 1" @click="step++"> Next </PrimaryButton>
+                </div>
             </div>
         </div>
     </AppLayout>

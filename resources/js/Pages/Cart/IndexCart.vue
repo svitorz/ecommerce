@@ -22,7 +22,9 @@ const props = defineProps({
 <template>
     <AppLayout>
         <template #header>
-            <h2 class="text-white">Shopping Cart</h2>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                Shopping Cart
+            </h2>
         </template>
 
         <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">

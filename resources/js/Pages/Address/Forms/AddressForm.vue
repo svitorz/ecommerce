@@ -50,7 +50,7 @@ const saveAddress = () => {
                     type="text"
                     class="mt-1 block w-full"
                     required
-                    autocomplete="zip_code"
+                    autocomplete="postal-code"
                 />
                 <InputError :message="form.errors.zip_code" class="mt-2" />
             </div>
@@ -60,10 +60,10 @@ const saveAddress = () => {
                 <TextInput
                     id="country"
                     v-model="form.country"
-                    type="country"
+                    type="text"
                     class="mt-1 block w-full"
                     required
-                    autocomplete="username"
+                    autocomplete="country-name"
                 />
                 <InputError :message="form.errors.country" class="mt-2" />
             </div>
@@ -73,10 +73,10 @@ const saveAddress = () => {
                 <TextInput
                     id="state"
                     v-model="form.state"
-                    type="state"
+                    type="text"
                     class="mt-1 block w-full"
                     required
-                    autocomplete="username"
+                    autocomplete="address-level1"
                 />
                 <InputError :message="form.errors.country" class="mt-2" />
             </div>
@@ -86,10 +86,10 @@ const saveAddress = () => {
                 <TextInput
                     id="city"
                     v-model="form.city"
-                    type="city"
+                    type="text"
                     class="mt-1 block w-full"
                     required
-                    autocomplete="username"
+                    autocomplete="address-level2"
                 />
                 <InputError :message="form.errors.country" class="mt-2" />
             </div>
@@ -99,10 +99,10 @@ const saveAddress = () => {
                 <TextInput
                     id="street"
                     v-model="form.street"
-                    type="street"
+                    type="text"
                     class="mt-1 block w-full"
                     required
-                    autocomplete="username"
+                    autocomplete="address-line1"
                 />
                 <InputError :message="form.errors.country" class="mt-2" />
             </div>
@@ -115,7 +115,7 @@ const saveAddress = () => {
                     type="number"
                     class="mt-1 block w-full"
                     required
-                    autocomplete="username"
+                    autocomplete="address-line2"
                 />
                 <InputError :message="form.errors.number" class="mt-2" />
             </div>

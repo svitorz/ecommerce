@@ -25,7 +25,9 @@ console.log(props.orders);
 <template>
     <AppLayout>
         <template #header>
-            <h2 class="text-white">See your last order</h2>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                See your last order
+            </h2>
         </template>
 
         <div class="py-2 dark:text-white">
