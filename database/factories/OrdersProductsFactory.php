@@ -18,12 +18,10 @@ class OrdersProductsFactory extends Factory
      */
     public function definition(): array
     {
-        $product = Product::inRandomOrder()->first(); // Pega um produto aleatório
-
         return [
-            'order_id' => Order::factory(), // Cria um pedido automaticamente
-            'product_id' => $product->id,  // Usa o ID do produto existente
-            'quantity' => $this->faker->numberBetween(1, 5), // Quantidade entre 1 e 5
+            'order_id' => Order::factory(),
+            'product_id' => Product::factory(),
+            'quantity' => $this->faker->numberBetween(1, 5),
         ];
     }
 }

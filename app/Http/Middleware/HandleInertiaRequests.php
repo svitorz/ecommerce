@@ -37,9 +37,9 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'auth' => [
-            'user' => $request->user()
-                ? $request->user()->load('address') // Certifique-se de carregar o relacionamento
-                : null,
+                'user' => $request->user()
+                    ? $request->user()->load('address') // Certifique-se de carregar o relacionamento
+                    : null,
             ],
         ]);
     }

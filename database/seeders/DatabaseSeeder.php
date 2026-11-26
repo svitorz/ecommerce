@@ -4,40 +4,43 @@ namespace Database\Seeders;
 
 use App\Models\Address;
 use App\Models\Order;
+use App\Models\Payment;
+use App\Models\Product;
 use App\Models\User;
 use Database\Factories\OrdersProductsFactory;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        $user = User::factory()->create([
+        $customer = User::factory()->create([
             'name' => 'Vitor Souza',
             'email' => 'vitor@example.com',
             'password' => Hash::make('12345678'),
-            'isAdmin' => false,
         ]);
+
         User::factory()->create([
-            'name' => 'Teste User no admin',
+            'name' => 'Cliente Teste',
             'email' => 'test@example.com',
             'password' => Hash::make('12345678'),
-            'isAdmin' => false,
         ]);
-        $this->call([CategorySeeder::class, ProductSeeder::class]);
-        Order::factory(10)->create()->each(function ($order) {
-            OrdersProductsFactory::new()->count(3)->create(['order_id' => $order->id]);
 
-            \App\Models\Payment::factory()->create([
-                'order_id' => $order->id,
-            ]);
+        User::factory()->admin()->create([
+            'name' => 'Administrador',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('12345678'),
+        ]);
+
+        $this->call([CategorySeeder::class, ProductSeeder::class]);
+
+        $users = User::all();
+        $products = Product::all();
+
+        Order::factory(10)->recycle($users)->create()->each(function (Order $order) use ($products) {
+            OrdersProductsFactory::new()->count(3)->recycle($products)->create(['order_id' => $order->id]);
+            Payment::factory()->create(['order_id' => $order->id]);
         });
 
         Address::factory()->create([
@@ -47,7 +50,7 @@ class DatabaseSeeder extends Seeder
             'street' => 'Rua Exemplo',
             'zip_code' => '12335-000',
             'number' => 123,
-            'user_id' => $user
+            'user_id' => $customer->id,
         ]);
     }
 }

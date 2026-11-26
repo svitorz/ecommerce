@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\isUserAdmin;
+use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\Cart;
 use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controllers\Middleware;
-use Inertia\Inertia;
 
 class CategoryController extends Controller implements HasMiddleware
 {
@@ -18,28 +17,33 @@ class CategoryController extends Controller implements HasMiddleware
 
     /**
      * Construct method
-    */
-    public function __construct(Category $category) {
+     */
+    public function __construct(Category $category)
+    {
         $this->category = $category;
     }
 
     /**
      * @return array
-     * Method to add middlewares in the functions.
+     *               Method to add middlewares in the functions.
      */
-    public static function middleware():array
+    public static function middleware(): array
     {
         return [
-            new Middleware(isUserAdmin::class, except:['index','getProducts']) // impede que usuários não-administradores acesses os formulários.
+            new Middleware(EnsureUserIsAdmin::class, except: ['index', 'getProducts']), // impede que usuários não-administradores acesses os formulários.
         ];
     }
 
-
-    public function getProducts(Category $category)
+    public function getProducts(Category $category, Cart $cart)
     {
-        $products = new Product();
-        return Inertia('Products/IndexProducts',[
-            'products' => $products::query()->whereBelongsTo($category)->paginate(8),
+        $products = Product::query()
+            ->whereBelongsTo($category)
+            ->withFavoriteFlag(auth()->id())
+            ->paginate(8)
+            ->through(fn (Product $product) => $cart->decorate($product));
+
+        return Inertia('Products/IndexProducts', [
+            'products' => $products,
             'isAdmin' => request()->user()->isAdmin(),
         ]);
     }
@@ -50,10 +54,10 @@ class CategoryController extends Controller implements HasMiddleware
     public function index()
     {
         return Inertia('Categories/IndexCategory',
-        [
-            'categories' => $this->category->paginate(6),
-            'isAdmin'=> request()->user()->isAdmin(),
-    ]);
+            [
+                'categories' => $this->category->paginate(6),
+                'isAdmin' => request()->user()->isAdmin(),
+            ]);
     }
 
     /**
@@ -62,10 +66,10 @@ class CategoryController extends Controller implements HasMiddleware
     public function create()
     {
         return Inertia('Categories/Forms/CreateCategory',
-        [
-            'route' => route('categories.store'),
-            'method' => 'POST'
-        ]);
+            [
+                'route' => route('categories.store'),
+                'method' => 'POST',
+            ]);
     }
 
     /**
@@ -74,6 +78,7 @@ class CategoryController extends Controller implements HasMiddleware
     public function store(StoreCategoryRequest $request)
     {
         $this->category->create($request->validated());
+
         return to_route('categories.index');
     }
 
@@ -83,11 +88,11 @@ class CategoryController extends Controller implements HasMiddleware
     public function edit(Category $category)
     {
         return Inertia('Categories/Forms/CreateCategory',
-         [
-            'category' => $category,
-            'route' => route('categories.update', $category->id),
-            'method' => 'PUT'
-        ]);
+            [
+                'category' => $category,
+                'route' => route('categories.update', $category->id),
+                'method' => 'PUT',
+            ]);
     }
 
     /**
@@ -103,6 +108,12 @@ class CategoryController extends Controller implements HasMiddleware
      */
     public function destroy(Category $category)
     {
+        if ($category->product()->exists()) {
+            return back()->withErrors(['category' => 'Não é possível excluir categoria que possui produtos.']);
+        }
+
         $category->delete();
+
+        return back();
     }
 }

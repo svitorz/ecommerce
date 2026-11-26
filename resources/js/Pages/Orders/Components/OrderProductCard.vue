@@ -15,10 +15,7 @@ const updateQuantity = async (product, quantity) => {
 
     try {
         if (product.quantity > product.stock) {
-            toastRef.value.showToast(
-                "The quantity cannot be higher than stock.",
-                "error",
-            );
+            toastRef.value.showToast("The quantity cannot be higher than stock.", "error");
             loading.value = false;
             return;
         }
@@ -29,17 +26,11 @@ const updateQuantity = async (product, quantity) => {
             preserveScroll: true,
             preserveState: true,
             onSuccess: () => {
-                toastRef.value.showToast(
-                    "Quantity successfully updated!",
-                    "success",
-                );
+                toastRef.value.showToast("Quantity successfully updated!", "success");
                 localProduct.inCart = true;
             },
             onError: () => {
-                toastRef.value.showToast(
-                    "Error adding product to cart.",
-                    "error",
-                );
+                toastRef.value.showToast("Error adding product to cart.", "error");
             },
             onFinish: () => {
                 loading.value = false;
@@ -68,6 +59,7 @@ const removeFromCart = async (product) => {
     loading.value = true;
     try {
         await router.visit(route("cart.destroy", { product: product }), {
+            method: "delete",
             preserveState: true,
             preserveScroll: true,
             onSuccess: () => {
@@ -76,10 +68,7 @@ const removeFromCart = async (product) => {
                 product.quantity = 1;
             },
             onError: () => {
-                toastRef.value.showToast(
-                    "Error removing product from cart.",
-                    "error",
-                );
+                toastRef.value.showToast("Error removing product from cart.", "error");
             },
             onFinish: () => {
                 loading.value = false;
@@ -94,9 +83,7 @@ const removeFromCart = async (product) => {
 </script>
 
 <template>
-    <div
-        class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0"
-    >
+    <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
         <a href="#" class="shrink-0 md:order-1">
             <img
                 class="h-20 w-20 dark:hidden"
@@ -111,9 +98,7 @@ const removeFromCart = async (product) => {
         </a>
 
         <label for="counter-input" class="sr-only">Choose quantity:</label>
-        <div
-            class="flex items-center justify-between md:order-3 md:justify-end"
-        >
+        <div class="flex items-center justify-between md:order-3 md:justify-end">
             <div class="flex items-center">
                 <button
                     type="button"

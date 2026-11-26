@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Product::class);
-            $table->decimal('rating',3,2)->min(0)->max(5);
+            $table->decimal('rating', 3, 2)->min(0)->max(5);
             $table->text('feedback');
         });
     }

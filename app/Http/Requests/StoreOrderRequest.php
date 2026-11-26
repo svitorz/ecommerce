@@ -11,7 +11,7 @@ class StoreOrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,23 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'fullName' => ['required', 'string', 'min:3', 'max:255'],
+            'cardNumber' => ['required', 'regex:/^[0-9\s]{16,20}$/'],
+            'ccv' => ['required', 'digits_between:3,4'],
+            'cardExpiration' => ['required', 'date_format:m/Y', 'after_or_equal:today'],
+        ];
+    }
+
+    /**
+     * Mensagens de validação personalizadas.
+     */
+    public function messages(): array
+    {
+        return [
+            'cardNumber.regex' => 'Número do cartão inválido.',
+            'ccv.digits_between' => 'O CVV deve ter 3 ou 4 dígitos.',
+            'cardExpiration.date_format' => 'Use o formato MM/AAAA.',
+            'cardExpiration.after_or_equal' => 'Cartão vencido.',
         ];
     }
 }

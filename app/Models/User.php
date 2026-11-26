@@ -4,15 +4,13 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Address;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -20,6 +18,7 @@ class User extends Authenticatable
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
@@ -65,22 +64,26 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'isAdmin' => 'boolean',
             'password' => 'hashed',
         ];
     }
 
-    public function isAdmin():bool
+    public function isAdmin(): bool
     {
-        if(Auth::check()){
-            return $this->isAdmin;
-        }
-        return false;
+        return (bool) $this->isAdmin;
     }
 
-    public function address():HasOne
+    public function address(): HasOne
     {
         return $this->HasOne(Address::class);
     }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function favoriteProducts()
     {
         return $this->belongsToMany(Product::class, 'favorite_products');
@@ -90,5 +93,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProductRating::class);
     }
-
 }

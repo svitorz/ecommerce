@@ -20,15 +20,9 @@ const handleSortedProducts = (value) => {
     <AppLayout title="Product">
         <template #header>
             <div>
-                <h2
-                    class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight"
-                >
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     All Products
-                    <PrimaryButton
-                        :type="button"
-                        class="float-end"
-                        v-if="isAdmin"
-                    >
+                    <PrimaryButton :type="button" class="float-end" v-if="isAdmin">
                         <a href="/products/create"> Create Product </a>
                     </PrimaryButton>
                 </h2>
@@ -40,13 +34,8 @@ const handleSortedProducts = (value) => {
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <SortDropdown
-                    :products="products"
-                    @sortedProducts="handleSortedProducts"
-                />
-                <div
-                    class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg"
-                >
+                <SortDropdown :products="products" @sortedProducts="handleSortedProducts" />
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                     <div v-if="products.length > 0">
                         <div
                             class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4"
@@ -55,10 +44,7 @@ const handleSortedProducts = (value) => {
                                 v-for="product in products"
                                 class="m-2 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
                             >
-                                <ProductCard
-                                    :product="product"
-                                    :isAdmin="isAdmin"
-                                />
+                                <ProductCard :product="product" :isAdmin="isAdmin" />
                             </div>
                         </div>
                         <div class="flex justify-center items-center">
@@ -66,9 +52,7 @@ const handleSortedProducts = (value) => {
                         </div>
                     </div>
                     <div v-else>
-                        <h1 class="text-white text-center">
-                            No products found.
-                        </h1>
+                        <h1 class="text-white text-center">No products found.</h1>
                     </div>
                 </div>
             </div>

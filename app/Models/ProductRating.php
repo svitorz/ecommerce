@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductRating extends Model
 {
-        //
-    protected $fillable = ['product_id', 'user_id', 'rating','feedback'];
+    //
+    protected $fillable = ['product_id', 'user_id', 'rating', 'feedback'];
 
     public function product(): BelongsTo
     {

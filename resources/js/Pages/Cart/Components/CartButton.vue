@@ -15,19 +15,13 @@ const addToCart = async () => {
     try {
         // Verifica se já está no carrinho
         if (localProduct.inCart) {
-            toastRef.value.showToast(
-                "Product is already in cart!",
-                "info"
-            );
+            toastRef.value.showToast("Product is already in cart!", "info");
             loading.value = false;
             return;
         }
 
         if (localProduct.quantity > localProduct.stock) {
-            toastRef.value.showToast(
-                "The quantity cannot be higher than stock.",
-                "error"
-            );
+            toastRef.value.showToast("The quantity cannot be higher than stock.", "error");
             loading.value = false;
             return;
         }
@@ -41,17 +35,11 @@ const addToCart = async () => {
             preserveScroll: true,
             preserveState: true,
             onSuccess: () => {
-                toastRef.value.showToast(
-                    "Product successfully added to cart!",
-                    "success"
-                );
+                toastRef.value.showToast("Product successfully added to cart!", "success");
                 localProduct.inCart = true;
             },
             onError: () => {
-                toastRef.value.showToast(
-                    "Error adding product to cart.",
-                    "error"
-                );
+                toastRef.value.showToast("Error adding product to cart.", "error");
             },
             onFinish: () => {
                 loading.value = false;
@@ -68,6 +56,7 @@ const removeFromCart = async (localProduct) => {
     loading.value = true;
     try {
         await router.visit(route("cart.destroy", { product: localProduct }), {
+            method: "delete",
             preserveState: true,
             preserveScroll: true,
             onSuccess: () => {
@@ -76,10 +65,7 @@ const removeFromCart = async (localProduct) => {
                 localProduct.quantity = 1;
             },
             onError: () => {
-                toastRef.value.showToast(
-                    "Error removing localProduct from cart.",
-                    "error"
-                );
+                toastRef.value.showToast("Error removing localProduct from cart.", "error");
             },
             onFinish: () => {
                 loading.value = false;

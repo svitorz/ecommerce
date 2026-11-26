@@ -37,14 +37,10 @@ const formatDate = (order_date) => {
 
                         <!-- Informações do usuário -->
                         <div class="space-y-0.5">
-                            <p
-                                class="text-base font-semibold text-gray-900 dark:text-white"
-                            >
+                            <p class="text-base font-semibold text-gray-900 dark:text-white">
                                 {{ rating.user.name }}
                             </p>
-                            <p
-                                class="text-sm font-normal text-gray-500 dark:text-gray-400"
-                            >
+                            <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
                                 {{ formatDate(rating.created_at) }}
                             </p>
                         </div>
@@ -66,9 +62,7 @@ const formatDate = (order_date) => {
                                     clip-rule="evenodd"
                                 />
                             </svg>
-                            <p
-                                class="text-sm font-medium text-gray-900 dark:text-white"
-                            >
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">
                                 Compra verificada
                             </p>
                         </div>
@@ -76,9 +70,7 @@ const formatDate = (order_date) => {
 
                     <!-- Conteúdo da avaliação -->
                     <div class="mt-4 min-w-0 flex-1 space-y-4 sm:mt-0">
-                        <p
-                            class="text-base font-normal text-gray-500 dark:text-gray-400"
-                        >
+                        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
                             {{ rating.feedback }}
                         </p>
                     </div>

@@ -2,29 +2,23 @@
 
 namespace App\Http\Controllers;
 
-// use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Product;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class FavoriteProductsController extends Controller
 {
-    public function store(User $user, Product $product): void
+    public function store(Request $request, Product $product): RedirectResponse
     {
-        if(!$this->isFavorite($user,$product))
-        {
-            $user->favoriteProducts()->attach($product);
-        }
+        $request->user()->favoriteProducts()->syncWithoutDetaching([$product->id]);
+
+        return back();
     }
 
-    public function destroy(User $user, Product $product): void
+    public function destroy(Request $request, Product $product): RedirectResponse
     {
-        if($this->isFavorite($user,$product)){
-            $user->favoriteProducts()->detach($product);
-        }
-    }
+        $request->user()->favoriteProducts()->detach($product->id);
 
-    public function isFavorite(User $user, Product $product): bool
-    {
-        return $user->favoriteProducts->contains($product);
+        return back();
     }
 }

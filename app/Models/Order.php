@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,13 +13,18 @@ class Order extends Model
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
 
-    protected $fillable = ['subtotal', 'status','user_id'];
+    protected $fillable = ['subtotal', 'status', 'user_id'];
+
+    protected function casts(): array
+    {
+        return ['status' => OrderStatus::class];
+    }
 
     public function products()
     {
         return $this->belongsToMany(Product::class, 'orders_products')
-                    ->withPivot('quantity')
-                    ->withTimestamps();
+            ->withPivot('quantity', 'unit_price')
+            ->withTimestamps();
     }
 
     public function users(): BelongsTo

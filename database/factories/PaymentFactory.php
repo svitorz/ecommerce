@@ -2,11 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Payment>
- */
 class PaymentFactory extends Factory
 {
     /**
@@ -17,11 +15,10 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-            'order_id' => \App\Models\Order::inRandomOrder()->first()->id,
+            'order_id' => Order::factory(),
             'full_name' => $this->faker->name(),
-            'ccv' => $this->faker->numberBetween(100, 999), // Gera um código de segurança de 3 dígitos
-            'card_number' => $this->faker->creditCardNumber(), // Gera um número fictício de cartão
-            'card_expiration' => \Carbon\Carbon::createFromFormat('m/Y', $this->faker->creditCardExpirationDateString)->startOfMonth()->format('Y-m-d'), // Formata como 'YYYY-MM-DD'
+            'card_last_four' => (string) fake()->numberBetween(1000, 9999),
+            'card_expiration' => fake()->dateTimeBetween('now', '+5 years')->format('Y-m-01'),
         ];
     }
 }

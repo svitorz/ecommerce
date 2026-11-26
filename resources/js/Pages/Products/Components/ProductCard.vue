@@ -140,9 +140,7 @@ const props = defineProps({
             </div>
 
             <p class="text-sm font-medium text-gray-900 dark:text-white">5.0</p>
-            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                (455)
-            </p>
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">(455)</p>
         </div>
 
         <ul class="mt-2 flex items-center gap-4">
@@ -184,16 +182,12 @@ const props = defineProps({
                         d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
                     />
                 </svg>
-                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                    Best Price
-                </p>
+                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Best Price</p>
             </li>
         </ul>
 
         <div class="mt-4 flex items-center justify-between gap-4">
-            <p
-                class="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white"
-            >
+            <p class="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">
                 {{ product.price }}
             </p>
             <!--  -->

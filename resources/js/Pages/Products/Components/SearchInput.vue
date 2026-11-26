@@ -9,7 +9,7 @@ const form = useForm({
 });
 
 function search() {
-    router.get(route('search', form.searchKey), form);
+    router.get(route("search", form.searchKey), form);
 }
 </script>
 
@@ -28,9 +28,7 @@ function search() {
                 placeholder="Type the name of the product you are looking for:"
             >
             </TextInput>
-            <PrimaryButton class="w-1/5 py-3 rounded-s-none">
-                Search
-            </PrimaryButton>
+            <PrimaryButton class="w-1/5 py-3 rounded-s-none"> Search </PrimaryButton>
         </div>
     </form>
 </template>

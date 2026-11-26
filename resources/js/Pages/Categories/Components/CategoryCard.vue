@@ -8,6 +8,7 @@ import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { Link } from "@inertiajs/vue3";
+import InputError from "@/Components/InputError.vue";
 defineProps({
     category: {
         type: Object,
@@ -72,9 +73,7 @@ const deleteCategory = (deleteCategoryId) => {
                     <DropdownLink :href="route('categories.edit', category.id)">
                         Edit Category
                     </DropdownLink>
-                    <div
-                        class="border-t border-gray-200 dark:border-gray-600"
-                    />
+                    <div class="border-t border-gray-200 dark:border-gray-600" />
                     <DropdownLink as="button" @click="confirmDelete">
                         Delete Category
                     </DropdownLink>
@@ -85,12 +84,13 @@ const deleteCategory = (deleteCategoryId) => {
             <DialogModal :show="confirmingDelete" @close="closeModal">
                 <template #title> Delete this Category? </template>
 
-                <template #content> This action is irreversible! </template>
+                <template #content>
+                    This action is irreversible!
+                    <InputError :message="form.errors.category" class="mt-2" />
+                </template>
 
                 <template #footer>
-                    <SecondaryButton :type="button" @click="closeModal">
-                        Cancel
-                    </SecondaryButton>
+                    <SecondaryButton :type="button" @click="closeModal"> Cancel </SecondaryButton>
 
                     <DangerButton
                         :type="button"
@@ -106,9 +106,7 @@ const deleteCategory = (deleteCategoryId) => {
                 </template>
             </DialogModal>
             <!--  Confirmation Dialog -->
-            <h5
-                class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-            >
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {{ category?.name }}
             </h5>
 
@@ -124,9 +122,7 @@ const deleteCategory = (deleteCategoryId) => {
                     })
                 "
             >
-                <PrimaryButton :type="button">
-                    See related Products
-                </PrimaryButton>
+                <PrimaryButton :type="button"> See related Products </PrimaryButton>
             </Link>
         </div>
     </div>

@@ -1,10 +1,10 @@
-<script setup> 
+<script setup>
 import Dropdown from "@/Components/Dropdown.vue";
-import { onMounted, ref, computed, defineEmits,watch } from "vue";
+import { onMounted, ref, computed, defineEmits, watch } from "vue";
 const props = defineProps({
-    products: Array
+    products: Array,
 });
-const emit = defineEmits(['sortedProducts']);
+const emit = defineEmits(["sortedProducts"]);
 
 const orderBy = ref("recent");
 // Computar os produtos ordenados dinamicamente
@@ -34,13 +34,13 @@ const sortedProducts = computed(() => {
 function setOrderBy(criteria) {
     orderBy.value = criteria;
 }
-onMounted(()=>{
-  emit('sortedProducts', sortedProducts.value)
-})
+onMounted(() => {
+    emit("sortedProducts", sortedProducts.value);
+});
 // Observa as alterações na const orderBy
 watch(orderBy, () => {
-  emit('sortedProducts', sortedProducts.value)
-})
+    emit("sortedProducts", sortedProducts.value);
+});
 </script>
 <template>
     <Dropdown align="right" width="48">
@@ -88,9 +88,7 @@ watch(orderBy, () => {
             </button>
         </template>
         <template #content>
-            <ul
-                class="p-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400"
-            >
+            <ul class="p-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">
                 <li>
                     <button
                         @click="setOrderBy('recent')"

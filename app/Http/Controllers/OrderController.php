@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Order\PlaceOrder;
+use App\Enums\OrderStatus;
 use App\Http\Requests\StoreOrderRequest;
 use App\Models\Order;
+use App\Services\Cart;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\calculateSubTotalController;
-use App\Http\Controllers\PaymentController;
-use App\Models\Payment;
-use App\Actions\Payment\StoreNewPayment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class OrderController extends Controller
 {
     private Order $order;
+
     public function __construct(Order $order)
     {
         $this->order = $order;
@@ -21,84 +24,65 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // dd($this->order->with('products')->get());
-        return Inertia('Orders/IndexOrders',[
-            'orders' => $this->order->with(['payments','products'])->orderBy('id', 'desc')->get(),
+        return Inertia('Orders/IndexOrders', [
+            'orders' => $request->user()->orders()
+                ->with(['payments', 'products'])
+                ->latest('id')
+                ->get(),
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(calculateSubTotalController $subtotalCalculator)
+    public function create(Cart $cart)
     {
+        if ($cart->items() === []) {
+            return to_route('cart.index')->withErrors(['cart' => 'Seu carrinho está vazio.']);
+        }
+
         return Inertia('Orders/Form/CreateOrder', [
-            'amount' => number_format($subtotalCalculator->calculate(), 2, '.', ''),
+            'amount' => number_format($cart->subtotal(), 2, '.', ''),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, calculateSubTotalController $subtotalCalculator,StoreNewPayment $storePayment)
+    public function store(StoreOrderRequest $request, PlaceOrder $placeOrder, Cart $cart): RedirectResponse
     {
-        $validated = $request->validate([
-            'fullName' => 'required|string|min:3|max:255',
-            'ccv' => 'required|digits:3',
-            'cardNumber' => 'required|regex:/^[0-9\s]{16,20}$/', // Aceita números e espaços
-            'cardExpiration' => 'required|date_format:m/Y|after_or_equal:today',
-        ]);
-        $order = Order::create(
-            [
-                'status' => 'pending_payment',
-                'subtotal' => number_format($subtotalCalculator->calculate(), 2, '.', ''),
-                'user_id' => auth()->user()->id,
-            ]
-        );
-        $payment = new Payment([
-           'full_name' => $validated['fullName'],
-            'ccv'=> $validated['ccv'],
-            'card_number'=> $validated['cardNumber'],
-            'card_expiration'=>\Carbon\Carbon::createFromFormat('m/Y', $validated['cardExpiration'])->startOfMonth()->format('Y-m-d'),
-            'order_id'=> $order,
+        $placeOrder->handle($request->user(), $cart->items(), $request->validated());
 
-        ]);
-        $storePayment->handle($payment,$order);
+        $cart->clear();
 
-        return to_route('orders.index');
+        return to_route('orders.index')->with('success', 'Pedido realizado com sucesso!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
-    {
-        //
-    }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Order $order): RedirectResponse
     {
-        $validated = $request->validate([
-            'status' => 'string|required'
-        ]);
+        Gate::authorize('update', $order);
 
-        if($validated['status'] != 'canceled'){
-            return abort(404);
+        $request->validate(['status' => ['required', 'in:canceled']]);
+
+        if (in_array($order->status, [OrderStatus::Completed, OrderStatus::Canceled], true)) {
+            return back()->withErrors(['status' => 'Este pedido não pode mais ser cancelado.']);
         }
 
-        $order->status = $validated['status'];
-        $order->save();
-    }
+        DB::transaction(function () use ($order) {
+            $order->load('products');
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+            foreach ($order->products as $product) {
+                $product->increment('stock', $product->pivot->quantity);
+            }
+
+            $order->update(['status' => OrderStatus::Canceled]);
+        });
+
+        return back()->with('success', 'Pedido cancelado.');
     }
 }

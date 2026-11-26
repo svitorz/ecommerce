@@ -16,24 +16,17 @@ const categories = ref([...props.categories.data]);
                     <a href="/categories/create"> Create New Category </a>
                 </PrimaryButton>
             </div>
-            <h2
-                class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight"
-            >
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 All Categories
             </h2>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div
-                    class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg"
-                >
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="grid grid-cols-3 m-2">
                         <div v-for="category in categories">
-                            <CategoryCard
-                                :category="category"
-                                :isAdmin="isAdmin"
-                            />
+                            <CategoryCard :category="category" :isAdmin="isAdmin" />
                         </div>
                     </div>
                 </div>

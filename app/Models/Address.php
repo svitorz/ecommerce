@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'country',
         'state',
@@ -18,7 +17,7 @@ class Address extends Model
         'street',
         'zip_code',
         'number',
-        'user_id'
+        'user_id',
     ];
 
     public function users(): BelongsTo
