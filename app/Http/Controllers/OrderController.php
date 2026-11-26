@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\Order\PlaceOrder;
 use App\Enums\OrderStatus;
 use App\Http\Requests\StoreOrderRequest;
-use App\Http\Traits\CartTrait;
 use App\Models\Order;
+use App\Services\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Gate;
 
 class OrderController extends Controller
 {
-    use CartTrait;
-
     private Order $order;
 
     public function __construct(Order $order)
@@ -39,25 +37,25 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(calculateSubTotalController $subtotalCalculator)
+    public function create(Cart $cart)
     {
-        if ($this->getCartItems() === []) {
+        if ($cart->items() === []) {
             return to_route('cart.index')->withErrors(['cart' => 'Seu carrinho está vazio.']);
         }
 
         return Inertia('Orders/Form/CreateOrder', [
-            'amount' => number_format($subtotalCalculator->calculate(), 2, '.', ''),
+            'amount' => number_format($cart->subtotal(), 2, '.', ''),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOrderRequest $request, PlaceOrder $placeOrder): RedirectResponse
+    public function store(StoreOrderRequest $request, PlaceOrder $placeOrder, Cart $cart): RedirectResponse
     {
-        $placeOrder->handle($request->user(), $this->getCartItems(), $request->validated());
+        $placeOrder->handle($request->user(), $cart->items(), $request->validated());
 
-        $this->clearCart();
+        $cart->clear();
 
         return to_route('orders.index')->with('success', 'Pedido realizado com sucesso!');
     }

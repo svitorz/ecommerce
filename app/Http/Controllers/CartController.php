@@ -2,31 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Traits\CartTrait;
 use App\Models\Product;
+use App\Services\Cart;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CartController extends Controller
 {
-    use CartTrait;
-
-    public function __construct()
+    public function __construct(private Cart $cart)
     {
-        $this->initializeCartSession();
+        $this->cart->initialize();
     }
 
-    public function getAll()
-    {
-        return $this->getCartItems();
-    }
-
-    public function index(calculateSubTotalController $subtotalCalculator, GetRecommendedProductsController $recommendedProducts)
+    public function index(GetRecommendedProductsController $recommendedProducts)
     {
         return Inertia::render('Cart/IndexCart', [
-            'products' => (array) $this->getCartItems(), // vem da trait.
-            'subtotal' => number_format($subtotalCalculator->calculate(), 2, '.', ''),
-            'recommended_products' => (array) $recommendedProducts->handle(),
+            'products' => $this->cart->items(),
+            'subtotal' => number_format($this->cart->subtotal(), 2, '.', ''),
+            'recommended_products' => (array) $recommendedProducts->handle($this->cart),
             'is_admin' => auth()->user()->isAdmin(),
         ]);
     }
@@ -43,7 +36,7 @@ class CartController extends Controller
             return back()->withErrors(['quantity' => 'Quantidade maior que o estoque disponível.']);
         }
 
-        $this->addToCart($product, $validated['quantity']);
+        $this->cart->add($product, $validated['quantity']);
 
         return back()->with([
             'message' => 'Product successfully added to cart!',
@@ -58,7 +51,7 @@ class CartController extends Controller
         ]);
 
         // verifica se o item está no carrinho
-        if (! $this->isInCart($product)) {
+        if (! $this->cart->has($product)) {
             return back()->withErrors(['cart' => 'O produto não está no carrinho.']);
         }
 
@@ -66,14 +59,14 @@ class CartController extends Controller
             return back()->withErrors(['quantity' => 'Quantidade maior que o estoque disponível.']);
         }
 
-        $this->updateQuantity($product, $validated['quantity']);
+        $this->cart->update($product, $validated['quantity']);
 
         return back()->with('success', 'Quantity successfully updated.');
     }
 
     public function destroy(Product $product)
     {
-        $this->removeFromCart($product);
+        $this->cart->remove($product);
 
         return back();
     }

@@ -8,6 +8,7 @@ use App\Http\Controllers\GetRecommendedProductsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductRatingController;
+use App\Services\Cart;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,11 +22,11 @@ Route::get('/', function () {
     ]);
 });
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/dashboard', function (Cart $cart) {
         $recommended_products = new GetRecommendedProductsController;
 
         return Inertia::render('Dashboard', [
-            'products' => $recommended_products->handle(12),
+            'products' => $recommended_products->handle($cart, 12),
         ]);
     })->name('dashboard');
     // busca específica de categorias.

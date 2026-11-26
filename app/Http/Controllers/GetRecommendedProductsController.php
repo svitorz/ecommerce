@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 // use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Services\Cart;
 
 class GetRecommendedProductsController extends Controller
 {
     /**
      * Retorna produtos com base nas escolhas do usuário.
      */
-    public function handle(int $limit = 3)
+    public function handle(Cart $cart, int $limit = 3)
     {
-        $cartController = new CartController;
         // Obtenha os produtos no carrinho
-        $cartItems = $cartController->getCartItems();
+        $cartItems = $cart->items();
 
         if (empty($cartItems)) {
             return Product::distinct()
@@ -22,7 +22,7 @@ class GetRecommendedProductsController extends Controller
                 ->withFavoriteFlag(auth()->id())
                 ->limit($limit)
                 ->get()
-                ->each(fn (Product $product) => $cartController->decorateWithCart($product))
+                ->each(fn (Product $product) => $cart->decorate($product))
                 ->toArray();
         }
 
@@ -45,7 +45,7 @@ class GetRecommendedProductsController extends Controller
             ->withFavoriteFlag(auth()->id())
             ->limit($limit) // Limite de 3 produtos, mas pode ser ajustado
             ->get()
-            ->each(fn (Product $product) => $cartController->decorateWithCart($product));
+            ->each(fn (Product $product) => $cart->decorate($product));
 
         return $recommendedProducts->toArray();
     }

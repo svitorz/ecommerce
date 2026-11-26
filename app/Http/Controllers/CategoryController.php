@@ -5,16 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\isUserAdmin;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use App\Http\Traits\CartTrait;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\Cart;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
 class CategoryController extends Controller implements HasMiddleware
 {
-    use CartTrait;
-
     public Category $category;
 
     /**
@@ -36,13 +34,13 @@ class CategoryController extends Controller implements HasMiddleware
         ];
     }
 
-    public function getProducts(Category $category)
+    public function getProducts(Category $category, Cart $cart)
     {
         $products = Product::query()
             ->whereBelongsTo($category)
             ->withFavoriteFlag(auth()->id())
             ->paginate(8)
-            ->through(fn (Product $product) => $this->decorateWithCart($product));
+            ->through(fn (Product $product) => $cart->decorate($product));
 
         return Inertia('Products/IndexProducts', [
             'products' => $products,
