@@ -348,7 +348,7 @@ const calculateRating = () => {
                                                 />
                                             </div>
                                         </div>
-                                        <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+                                        <div class="mt-6 flex flex-wrap items-center gap-4 sm:mt-8">
                                             <FavoriteButton :product="localProduct" />
 
                                             <CartButton
